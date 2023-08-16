@@ -81,6 +81,15 @@ def tables():
 def index():
     return render_template('index.html')
 
+class create_acc(db.Model):
+    sno = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(80),nullable=False)
+    last_name = db.Column(db.String(120), nullable=True)
+    email_add = db.Column(db.String(120), unique=False, nullable=True)
+    password = db.Column(db.String(120), nullable=True)
+    repeat_password = db.Column(db.String(120), nullable=True)
+    date_time = db.Column(db.String(120), nullable=True)
+    phone_number = db.Column(db.String(120), nullable=True)
 
 @app.route('/register',methods = ['POST', 'GET'])
 def register():
