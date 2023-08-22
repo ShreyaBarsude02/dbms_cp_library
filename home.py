@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_login import login_user, LoginManager, UserMixin, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import json
+
+with open("config.json","r") as c:
+    params= json.load(c) ["params"]
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
@@ -79,7 +83,7 @@ def tables():
 
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', params=params)
 
 class create_acc(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
@@ -121,4 +125,42 @@ def register():
                 return redirect(url_for('index'))
 
     return render_template('register.html')
+
+
+@app.route('/AIDS')
+def AIDS():
+    return render_template('AIDS.html')
+
+@app.route('/Chemical')
+def Chemical():
+    return render_template('Chemical.html')
+
+@app.route('/Computer')
+def Computer():
+    return render_template('Computer.html')
+
+@app.route('/CS_AI')
+def CS_AI():
+    return render_template('CS_AI.html')
+
+@app.route('/CS_AIML')
+def CS_AIML():
+    return render_template('CS_AIML.html')
+
+@app.route('/ENTC')
+def ENTC():
+    return render_template('ENTC.html')
+
+@app.route('/Information_tech')
+def Information_tech():
+    return render_template('Information_tech.html')
+
+@app.route('/Instrumentation')
+def Instrumentation():
+    return render_template('Instrumentation.html')
+
+@app.route('/Mechanical')
+def Mechanical():
+    return render_template('Mechanical.html')
+
 app.run(debug=True)

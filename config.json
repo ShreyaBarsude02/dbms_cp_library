@@ -1,0 +1,14 @@
+{
+  "params":
+  {
+    "Bks_chem": 9,
+    "Bks_comp": 29,
+    "Bks_it" : 22,
+    "Bks_instru" : 10,
+    "Bks_mech" : 14,
+    "Bks_entc" : 19,
+    "Bks_aids" : 20,
+    "Bks_csai" : 10,
+    "Bks_csaiml" : 12
+  }
+}
