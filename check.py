@@ -78,6 +78,7 @@ def register():
 
             mysql.connection.commit()
             msg = 'You have successfully registered!'
+
     elif request.method == 'POST':
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)
@@ -194,5 +195,18 @@ def Instrumentation():
 def Mechanical():
     return render_template('Mechanical.html')
 
+@app.route('/add_edit_chem',methods=['GET','POST'])
+def add_edit_chem():
+    if request.method == "POST":
+        details = request.form
+        bk_name = details['bookName']
+        bk_des = details['bookDesc']
+        bk_id = details['bookId']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des,bk_id))
+        mysql.connection.commit()
+        cur.close()
+        return render_template('index.html',params=params)
+    return render_template('add_edit_chem.html')
 
 app.run(host="localhost", debug=True)
