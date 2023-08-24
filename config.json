@@ -9,6 +9,8 @@
     "Bks_entc" : 19,
     "Bks_aids" : 20,
     "Bks_csai" : 10,
-    "Bks_csaiml" : 12
+    "Bks_csaiml" : 12,
+    "admin_user" : "Vit_librarian",
+    "admin_password" : "1234"
   }
 }

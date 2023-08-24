@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 import json
-from datetime import datetime
 
 with open("config.json","r") as c:
     params= json.load(c) ["params"]
@@ -14,7 +13,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here 
+app.config['MYSQL_PASSWORD'] = '1234' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
 
 
@@ -39,8 +38,8 @@ def login():
             msg = 'Logged in successfully!'
             return render_template('index.html', msg=msg, params=params)
         else:
-            msg = 'Incorrect username / password!'
-    return render_template('login.html', msg=msg, params=params)
+            flash('Invalid email or password.')
+    return render_template('login.html', params=params)
 
 
 
@@ -77,7 +76,7 @@ def register():
                 (first_name, last_name, email_add, password, repeat_password, phone_number,))
 
             mysql.connection.commit()
-            msg = 'You have successfully registered!'
+            msg = 'You have successfully registered! Go to login'
 
     elif request.method == 'POST':
         msg = 'Please fill out the form!'
@@ -89,58 +88,6 @@ def register():
 def index():
 	if 'loggedin' in session:
 		return render_template("index.html", params=params)
-	return redirect(url_for('login'))
-
-
-@app.route("/display")
-def display():
-	if 'loggedin' in session:
-		cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-		cursor.execute('SELECT * FROM accounts WHERE id = % s',
-					(session['id'], ))
-		account = cursor.fetchone()
-		return render_template("display.html", account=account)
-	return redirect(url_for('login'))
-
-
-@app.route("/update", methods=['GET', 'POST'])
-def update():
-	msg = ''
-	if 'loggedin' in session:
-		if request.method == 'POST' and 'first_name' in request.form \
-				and 'last_name' in request.form and 'email_add' in request.form \
-				and 'password' in request.form and 'repeat_password' in request.form \
-				and 'phone_number' in request.form:
-
-			email_add = request.form['email_add']
-			first_name = request.form['first_name']
-			last_name = request.form['last_name']
-			password = request.form['password']
-			repeat_password = request.form['repeat_password']
-			phone_number = request.form['phone_number']
-			cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-			cursor.execute(
-				'SELECT * FROM accounts WHERE email_add = % s',
-					(email_add, ))
-			account = cursor.fetchone()
-			if account:
-				msg = 'Account already exists !'
-			elif not re.match(r'[^@]+@[^@]+\.[^@]+', email_add):
-				msg = 'Invalid email address !'
-			elif not re.match(r'[A-Za-z0-9]+', first_name + last_name):
-				msg = 'name must contain only characters and numbers !'
-			else:
-				cursor.execute('UPDATE accounts SET email_add =% s,\
-				first_name =% s, last_name =% s, password =% s, \
-				repeat_password =% s, phone_number =% s WHERE id =% s', (
-					email_add, first_name, last_name, password,
-				repeat_password, phone_number,
-				(session['id'], ), ))
-				mysql.connection.commit()
-				msg = 'You have successfully updated !'
-		elif request.method == 'POST':
-			msg = 'Please fill out the form !'
-		return render_template("update.html", msg=msg)
 	return redirect(url_for('login'))
 
 @app.route('/cards')
@@ -195,8 +142,8 @@ def Instrumentation():
 def Mechanical():
     return render_template('Mechanical.html')
 
-@app.route('/add_edit_chem', methods=['GET', 'POST'])
-def add_edit_chem():
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
     if request.method == "POST":
         details = request.form
         bk_name = details['bookName']
@@ -216,19 +163,41 @@ def add_edit_chem():
             cur.close()
             session['com'] = False
         
-        return render_template('index.html', params=params)
+        return render_template('add_book.html', params=params)
     
-    return render_template('add_edit_chem.html')
+    return render_template('add_book.html')
+
+@app.route('/admin_login',methods=['GET','POST'])
+def admin_login():
+    if "user" in session and session['user'] == params['admin_user']:
+        return render_template("add_book.html")
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        userpass = request.form.get("password")
+        if username == params['admin_user'] and userpass == params['admin_password']:
+            # set the session variable
+            session['user'] = username
+            return render_template("add_book.html")
+    else:
+        flash("Incorrect username or password")
+        return render_template("admin_login.html")
+    return render_template("admin_login.html")
+
+@app.route('/admin_logout')
+def admin_logout():
+    session.pop('user')
+    return redirect('/index')
 
 @app.route('/add_chem')
 def add_chem():
      session['chem'] = True
-     return render_template('add_edit_chem.html')
+     return render_template('admin_login.html')
      
 @app.route('/add_com')
 def add_com():
      session['com'] = True
-     return render_template('add_edit_chem.html')
+     return render_template('admin_login.html')
 
 
 app.run(host="localhost", debug=True)
