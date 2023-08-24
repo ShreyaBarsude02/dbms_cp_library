@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 import json
+import mysql.connector
 
 with open("config.json","r") as c:
     params= json.load(c) ["params"]
@@ -13,7 +14,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here
+app.config['MYSQL_PASSWORD'] = '1234' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
 
 
@@ -225,7 +226,7 @@ def admin_login():
              return render_template("add_book.html")
         elif 'edit' in session and session['edit']:
              session.pop('edit')
-             return render_template("edit.html")
+             return render_template("edit_books.html")
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -238,7 +239,7 @@ def admin_login():
                 return render_template("add_book.html")
             elif 'edit' in session and session['edit']:
                 session.pop('edit')
-                return render_template("edit.html")
+                return render_template("edit_books.html")
     else:
         flash("Incorrect username or password")
         return render_template("admin_login.html")
@@ -295,10 +296,60 @@ def add_csaiml():
      session['csaiml'] = True
      return render_template('admin_login.html')
 
-@app.route('/edit')
-def edit():
+@app.route('/edit_books')
+def edit_books():
     # return render_template('edit.html',  params=params)
     session['edit'] = True
     return render_template('admin_login.html')
+
+@app.route('/edit_chem')
+def edit_chem():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_chem")
+    user = cur.fetchall()
+    return render_template('edit_chem.html', user=user)
+
+@app.route("/edit_in_bk_chem/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_chem(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_chem SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_chem/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_comp')
+def edit_comp():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_com")
+    user = cur.fetchall()
+    return render_template('edit_comp.html', user=user)
+
+@app.route("/edit_in_bk_comp/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_comp(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_com WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_com SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_comp/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
 
 app.run(host="localhost", debug=True)

@@ -10,7 +10,7 @@
     "Bks_aids" : 20,
     "Bks_csai" : 10,
     "Bks_csaiml" : 12,
-    "admin_user" : "Vit_librarian",
-    "admin_password" : "1234"
+    "admin_user" : "vit",
+    "admin_password" : "1"
   }
 }
