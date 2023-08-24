@@ -402,4 +402,129 @@ def edit_in_instru(sr_no):
     else:
         return render_template("edit.html", book_data=book_data)
 
+@app.route('/edit_mech')
+def edit_mech():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_mech")
+    user = cur.fetchall()
+    return render_template('edit_mech.html', user=user)
+
+@app.route("/edit_in_bk_mech/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_mech(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_mech it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_mech SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_mech/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_entc')
+def edit_entc():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_entc")
+    user = cur.fetchall()
+    return render_template('edit_entc.html', user=user)
+
+@app.route("/edit_in_bk_entc/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_entc(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_entc it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_entc SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_entc/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_aids')
+def edit_aids():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_aids")
+    user = cur.fetchall()
+    return render_template('edit_aids.html', user=user)
+
+@app.route("/edit_in_bk_aids/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_aids(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_aids it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_aids SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_aids/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_csai')
+def edit_csai():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_csai")
+    user = cur.fetchall()
+    return render_template('edit_csai.html', user=user)
+
+@app.route("/edit_in_bk_csai/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_csai(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_csai it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_csai SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_csai/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_csaiml')
+def edit_csaiml():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_csaiml")
+    user = cur.fetchall()
+    return render_template('edit_csaiml.html', user=user)
+
+@app.route("/edit_in_bk_csaiml/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_csaiml(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_csaiml it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_csaiml SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_csaiml/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
 app.run(host="localhost", debug=True)
