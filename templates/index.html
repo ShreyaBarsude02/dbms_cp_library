@@ -1,207 +1,266 @@
-{% extends "layout.html" %}
-{% block body %}
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+{% extends "layout.html" %} {% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <a
+      href="#"
+      class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+      ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
+    >
+  </div>
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
-
-      <div class="jumbotron p-3 p-md-5 text-black rounded .bg-dark {background-color: #dbdce3!important;}" style="display: flex; flex-direction: column; align-items: center;">
-        <div class="col-md-6 px-0">
-          <h1 class="display-9 font-italic text-center">Bajrangdas Lohiya Central Library</h1>
-            <hr>
-          <p class="lead my-3 text-center">The Bajrangdas Lohiya Central Library of Vishwakarma Institute of Technology was established in 1984.
-                               The main object of Bajrangdas Lohiya Central library is to support the educational & research programmes of the Institute by providing physical and intellectual access to information, consistent with the present and the anticipated educational and research functions of the institute.
-                               The Bajrangdas Lohiya Central library consists of Reference Section, Journal Section, Reading Hall and Stack-Room.
-                               The library has unique collection of Encyclopedia, Handbooks, Textbooks, Journals, Video Cassettes, CD'S, B.I.Standards, Video courses etc.
-                               The Bajrangdas Lohiya Central library uses SLIM 21 software.
-                               This software consists of modules of Acquisitions, Cataloguing Circulation, Serial Control, Article Indexing and WEB OPAC. Circulation system of books is based on Bar-Code.</p>
-
+  <div
+    class="jumbotron p-3 p-md-5 text-black rounded .bg-dark {background-color: #dbdce3!important;}"
+    style="display: flex; flex-direction: column; align-items: center"
+  >
+    <div class="col-md-6 px-0">
+      <h1 class="display-9 font-italic text-center">
+        Bajrangdas Lohiya Central Library
+      </h1>
+      <hr />
+      <p class="lead my-3 text-center">
+        The Bajrangdas Lohiya Central Library of Vishwakarma Institute of
+        Technology was established in 1984. The main object of Bajrangdas Lohiya
+        Central library is to support the educational & research programmes of
+        the Institute by providing physical and intellectual access to
+        information, consistent with the present and the anticipated educational
+        and research functions of the institute. The Bajrangdas Lohiya Central
+        library consists of Reference Section, Journal Section, Reading Hall and
+        Stack-Room. The library has unique collection of Encyclopedia,
+        Handbooks, Textbooks, Journals, Video Cassettes, CD'S, B.I.Standards,
+        Video courses etc. The Bajrangdas Lohiya Central library uses SLIM 21
+        software. This software consists of modules of Acquisitions, Cataloguing
+        Circulation, Serial Control, Article Indexing and WEB OPAC. Circulation
+        system of books is based on Bar-Code.
+      </p>
+    </div>
+  </div>
+  <!-- Content Row -->
+  <div class="row">
+    <!--                        Chemical Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/Chemical">Chemical Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_chem']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!--                        Computer Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/Computer">Computer Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_comp']}}
+              </div>
             </div>
-                    <!-- Content Row -->
-                    <div class="row">
-
-<!--                        Chemical Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/Chemical">Chemical Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_chem']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        Computer Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/Computer">Computer Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_comp']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                       Information Technology-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/Information_tech">Information Technology</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_it']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        Instrumentation Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/Instrumentation">Instrumentation Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_instru']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        Mechanical Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/Mechanical">Mechanical Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_mech']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        E & TC Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/ENTC">E&TC Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_entc']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        AIDS Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/AIDS">AIDS Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_aids']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        CSAI Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/CS_AI">CS (AI) Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_csai']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--                        CSAIML Engineering-->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1">
-                                                <a href="/CS_AIML">CS (AI & ML) Engineering</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{params['Bks_csaiml']}}</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-book fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
             </div>
-
-            <div class="jumbotron p-3 p-md-5 text-black rounded .bg-dark {background-color: #dbdce3!important;}">
-        <div class="col-md-6 px-0">
-          <h1 class="display-9 font-italic">Working Hours :</h1>
-            <hr>
-          <p class="lead my-3">Circulation Section Timing :- Monday to Friday 09.30 A.M. to 7.30 P.M. and Saturday 10.00 A.M. to 06.00 P.M.
-          <br> <br>
-              Reading Hall Timing :- Monday to Saturday 08.00 A.M. to 09.00 P.M.
-          </p>
-
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!--                       Information Technology-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/Information_tech">Information Technology</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_it']}}
+              </div>
             </div>
-            <!-- End of Main Content -->
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        Instrumentation Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/Instrumentation">Instrumentation Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_instru']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        Mechanical Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/Mechanical">Mechanical Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_mech']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        E & TC Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/ENTC">E&TC Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_entc']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        AIDS Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/AIDS">AIDS Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_aids']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        CSAI Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/CS_AI">CS (AI) Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_csai']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--                        CSAIML Engineering-->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div
+                class=".text-xs {font-size: 1.4rem;} font-weight-bold text-primary text-uppercase mb-1"
+              >
+                <a href="/CS_AIML">CS (AI & ML) Engineering</a>
+              </div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">
+                {{params['Bks_csaiml']}}
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-book fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="jumbotron p-3 p-md-5 text-black rounded .bg-dark {background-color: #dbdce3!important;}"
+>
+  <div class="col-md-6 px-0">
+    <h1 class="display-9 font-italic">Working Hours :</h1>
+    <hr />
+    <p class="lead my-3">
+      Circulation Section Timing :- Monday to Friday 09.30 A.M. to 7.30 P.M. and
+      Saturday 10.00 A.M. to 06.00 P.M. <br />
+      <br />
+      Reading Hall Timing :- Monday to Saturday 08.00 A.M. to 09.00 P.M.
+    </p>
+  </div>
+</div>
+<!-- End of Main Content -->
 {% endblock %}
-
