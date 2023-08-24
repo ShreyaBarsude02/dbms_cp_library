@@ -13,7 +13,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234' # enter password here
+app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
 
 
@@ -220,7 +220,12 @@ def add_book():
 @app.route('/admin_login',methods=['GET','POST'])
 def admin_login():
     if "user" in session and session['user'] == params['admin_user']:
-        return render_template("add_book.html")
+        if 'add' in session and session['add']:
+             session.pop('add')
+             return render_template("add_book.html")
+        elif 'edit' in session and session['edit']:
+             session.pop('edit')
+             return render_template("edit.html")
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -228,7 +233,12 @@ def admin_login():
         if username == params['admin_user'] and userpass == params['admin_password']:
             # set the session variable
             session['user'] = username
-            return render_template("add_book.html")
+            if 'add' in session and session['add']:
+                session.pop('add')
+                return render_template("add_book.html")
+            elif 'edit' in session and session['edit']:
+                session.pop('edit')
+                return render_template("edit.html")
     else:
         flash("Incorrect username or password")
         return render_template("admin_login.html")
@@ -242,6 +252,7 @@ def admin_logout():
 @app.route('/add_chem')
 def add_chem():
      session['chem'] = True
+     session['add'] = True
      return render_template('admin_login.html')
      
 @app.route('/add_com')
@@ -283,5 +294,11 @@ def add_csai():
 def add_csaiml():
      session['csaiml'] = True
      return render_template('admin_login.html')
+
+@app.route('/edit')
+def edit():
+    # return render_template('edit.html',  params=params)
+    session['edit'] = True
+    return render_template('admin_login.html')
 
 app.run(host="localhost", debug=True)
