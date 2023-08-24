@@ -156,14 +156,64 @@ def add_book():
             mysql.connection.commit()
             cur.close()
             session['chem'] = False
+
         elif 'com' in session and session['com']:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO bks_com(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
             mysql.connection.commit()
             cur.close()
             session['com'] = False
-        
-        return render_template('add_book.html', params=params)
+
+        elif 'it' in session and session['it']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_it(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['it'] = False
+
+        elif 'instru' in session and session['instru']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_instru(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['instru'] = False
+
+        elif 'mech' in session and session['mech']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_mech(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['mech'] = False
+
+        elif 'entc' in session and session['entc']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_entc(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['entc'] = False
+
+        elif 'aids' in session and session['aids']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_aids(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['aids'] = False
+
+        elif 'csai' in session and session['csai']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_csai(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['csai'] = False
+
+        elif 'csaiml' in session and session['csaiml']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_csaiml(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['csaiml'] = False
+
+        return render_template('add_book.html')
     
     return render_template('add_book.html')
 
@@ -199,5 +249,39 @@ def add_com():
      session['com'] = True
      return render_template('admin_login.html')
 
+@app.route('/add_it')
+def add_it():
+     session['it'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_instru')
+def add_instru():
+     session['instru'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_mech')
+def add_mech():
+     session['mech'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_entc')
+def add_entc():
+     session['entc'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_aids')
+def add_aids():
+     session['aids'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_csai')
+def add_csai():
+     session['csai'] = True
+     return render_template('admin_login.html')
+
+@app.route('/add_csaiml')
+def add_csaiml():
+     session['csaiml'] = True
+     return render_template('admin_login.html')
 
 app.run(host="localhost", debug=True)
