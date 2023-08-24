@@ -126,10 +126,27 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="/charts">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#addEditdrop"
+                   aria-expanded="true" aria-controls="addEditdrop">
+                    <i class="fas fa-fw fa-plus"></i>
+                    <span>Add/Edit</span>
+                </a>
+                <div id="addEditdrop" class="collapse" aria-labelledby="headingaddEditdrop" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Add / Edit Books</h6>
+                        <a class="collapse-item" href="/add_chem">Chemical Engineering</a>
+                        <a class="collapse-item" href="#">Information Technology</a>
+                        <a class="collapse-item" href="/add_com">Computer Engineering</a>
+                        <a class="collapse-item" href="#">Instrumentation Engineering</a>
+                        <a class="collapse-item" href="#">Mechanical Engineering</a>
+                        <a class="collapse-item" href="#">E & TC Engineering</a>
+                        <a class="collapse-item" href="#">AIDS</a>
+                        <a class="collapse-item" href="#">CS (AI)</a>
+                        <a class="collapse-item" href="#">CS (AI & ML)</a>
+                    </div>
+                </div>
             </li>
+            
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
