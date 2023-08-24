@@ -352,4 +352,54 @@ def edit_in_comp(sr_no):
     else:
         return render_template("edit.html", book_data=book_data)
 
+@app.route('/edit_it')
+def edit_it():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_it")
+    user = cur.fetchall()
+    return render_template('edit_it.html', user=user)
+
+@app.route("/edit_in_bk_it/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_it(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_it it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_it SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_it/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
+@app.route('/edit_instru')
+def edit_instru():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_instru")
+    user = cur.fetchall()
+    return render_template('edit_instru.html', user=user)
+
+@app.route("/edit_in_bk_instru/<int:sr_no>", methods=["GET", "POST"])
+def edit_in_instru(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_instru it WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    if request.method == "POST":
+        bk_name = request.form["bk_name"]
+        bk_des = request.form["bk_des"]
+        bk_id = request.form["bk_id"]
+        query = "UPDATE bks_instru SET bk_name = %s, bk_des = %s, bk_id=%s WHERE sr_no = %s"
+        values = (bk_name, bk_des, bk_id,sr_no)
+        cursor.execute(query, values)
+        mysql.connection.commit()
+        cursor.close()
+        return redirect("/edit_in_bk_instru/"+str(sr_no))
+    else:
+        return render_template("edit.html", book_data=book_data)
+
 app.run(host="localhost", debug=True)
