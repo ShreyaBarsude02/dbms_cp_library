@@ -14,7 +14,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234'
+app.config['MYSQL_PASSWORD'] = 'samarth1'
 app.config['MYSQL_DB'] = 'dbms_cp'
 
 
@@ -195,18 +195,40 @@ def Instrumentation():
 def Mechanical():
     return render_template('Mechanical.html')
 
-@app.route('/add_edit_chem',methods=['GET','POST'])
+@app.route('/add_edit_chem', methods=['GET', 'POST'])
 def add_edit_chem():
     if request.method == "POST":
         details = request.form
         bk_name = details['bookName']
         bk_des = details['bookDesc']
         bk_id = details['bookId']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des,bk_id))
-        mysql.connection.commit()
-        cur.close()
-        return render_template('index.html',params=params)
+        
+        if 'chem' in session and session['chem']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['chem'] = False
+        elif 'com' in session and session['com']:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO bks_com(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
+            mysql.connection.commit()
+            cur.close()
+            session['com'] = False
+        
+        return render_template('index.html', params=params)
+    
     return render_template('add_edit_chem.html')
+
+@app.route('/add_chem')
+def add_chem():
+     session['chem'] = True
+     return render_template('add_edit_chem.html')
+     
+@app.route('/add_com')
+def add_com():
+     session['com'] = True
+     return render_template('add_edit_chem.html')
+
 
 app.run(host="localhost", debug=True)
