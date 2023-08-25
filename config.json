@@ -11,6 +11,7 @@
     "Bks_csai" : 10,
     "Bks_csaiml" : 12,
     "admin_user" : "vit",
-    "admin_password" : "1"
+    "admin_password" : "1",
+    "upload_location" : "F:\\dbms\\dbms_cp_library\\static\\img"
   }
 }

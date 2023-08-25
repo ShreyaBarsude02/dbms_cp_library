@@ -1,4 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
-
+  {% for book in data %}
+  <div class="card mb-3" style="max-width: 799px;left: 29px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="/static/{{ book.file_path|replace('F:\\dbms\\dbms_cp_library\\static\\', '')|replace('\\', '/') }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{book.bk_chem}}</h5>
+        <p class="card-text">{{book.bk_des}}</p>
+        <p class="card-text"><small class="text-body-secondary">Book ID : {{book.bk_id}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+  {% endfor %}
 {% endblock %}

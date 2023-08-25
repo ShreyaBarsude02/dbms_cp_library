@@ -4,6 +4,8 @@ import MySQLdb.cursors
 import re
 import json
 import mysql.connector
+from werkzeug.utils import secure_filename
+import os
 
 with open("config.json","r") as c:
     params= json.load(c) ["params"]
@@ -16,6 +18,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
+app.config['UPLOAD_FOLDER'] = params['upload_location']
 
 
 mysql = MySQL(app)
@@ -113,7 +116,10 @@ def AIDS():
 
 @app.route('/Chemical')
 def Chemical():
-    return render_template('Chemical.html')
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM bks_chem")
+    data = cur.fetchall()
+    return render_template('Chemical.html',data=data)
 
 @app.route('/Computer')
 def Computer():
@@ -152,11 +158,17 @@ def add_book():
         bk_id = details['bookId']
         
         if 'chem' in session and session['chem']:
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
-            mysql.connection.commit()
-            cur.close()
-            session['chem'] = False
+            if 'file' in request.files:
+                file = request.files['file']
+                if file.filename != '':
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(file_path)
+                    cur = mysql.connection.cursor()
+                    cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    mysql.connection.commit()
+                    cur.close()
+                    session['chem'] = False
 
         elif 'com' in session and session['com']:
             cur = mysql.connection.cursor()
@@ -165,7 +177,8 @@ def add_book():
             cur.close()
             session['com'] = False
 
-        elif 'it' in session and session['it']:
+        elif 'it' in \
+                session and session['it']:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO bks_it(bk_name, bk_des, bk_id) VALUES (%s, %s, %s)", (bk_name, bk_des, bk_id))
             mysql.connection.commit()

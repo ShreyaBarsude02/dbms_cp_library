@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Add Books</h1>
                             </div>
-                            <form class="user" action="/add_book" method="post">
+                            <form class="user" action="/add_book" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" name="bookName" class="form-control form-control-user" id="exampleBookName"
@@ -50,6 +50,10 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user" id="exampleID"
                                         placeholder="Book ID" name="bookId" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" class="form-control form-control-user" id="examplephoto"
+                                        placeholder="Book Photo" name="file" required>
                                 </div>
                                 <input style="font-size:19px" type="submit" value="Submit" class="btn btn-primary btn-user btn-block" >
                                 <hr>
