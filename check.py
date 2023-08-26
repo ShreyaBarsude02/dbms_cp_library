@@ -16,7 +16,7 @@ app.secret_key = 'your secret key'
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234' # enter password here
+app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
 app.config['UPLOAD_FOLDER'] = params['upload_location']
 
@@ -231,6 +231,10 @@ def add_book():
     
     return render_template('add_book.html')
 
+@app.route('/edit_book')
+def eb():
+    return render_template("edit_books.html")
+
 @app.route('/admin_login',methods=['GET','POST'])
 def admin_login():
     if "user" in session and session['user'] == params['admin_user']:
@@ -239,7 +243,7 @@ def admin_login():
              return render_template("add_book.html")
         elif 'edit' in session and session['edit']:
              session.pop('edit')
-             return render_template("edit_books.html")
+             return redirect("/edit_book")
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -336,7 +340,7 @@ def edit_in_chem(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_chem/"+str(sr_no))
+        return redirect("/edit_chem")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -361,7 +365,7 @@ def edit_in_comp(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_comp/"+str(sr_no))
+        return redirect("/edit_comp")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -386,7 +390,7 @@ def edit_in_it(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_it/"+str(sr_no))
+        return redirect("/edit_it")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -411,7 +415,7 @@ def edit_in_instru(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_instru/"+str(sr_no))
+        return redirect("/edit_instru")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -436,7 +440,7 @@ def edit_in_mech(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_mech/"+str(sr_no))
+        return redirect("/edit_mech")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -461,7 +465,7 @@ def edit_in_entc(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_entc/"+str(sr_no))
+        return redirect("/edit_entc")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -486,7 +490,7 @@ def edit_in_aids(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_aids/"+str(sr_no))
+        return redirect("/edit_aids")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -511,7 +515,7 @@ def edit_in_csai(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_csai/"+str(sr_no))
+        return redirect("/edit_csai")
     else:
         return render_template("edit.html", book_data=book_data)
 
@@ -536,8 +540,13 @@ def edit_in_csaiml(sr_no):
         cursor.execute(query, values)
         mysql.connection.commit()
         cursor.close()
-        return redirect("/edit_in_bk_csaiml/"+str(sr_no))
+        return redirect("/edit_csaiml")
     else:
         return render_template("edit.html", book_data=book_data)
+    
+@app.route("/editBack")
+def editBack():
+    return redirect("/edit_book")
+
 
 app.run(host="localhost", debug=True)
