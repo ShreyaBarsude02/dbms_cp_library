@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Add Books</h1>
                             </div>
-                            <form id="BooksEdit" data-sb-form-api-token="API_TOKEN" action="/edit_in_bk_chem/{{book_data.sr_no}}"autocomplete="on" method="post" enctype="multipart/form-data">
+                            <form id="BooksEdit" data-sb-form-api-token="API_TOKEN" action="/edit_in_bk_{{dep}}/{{book_data.sr_no}}"autocomplete="on" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" name="bk_name" class="form-control form-control-user" id="exampleBookName"
