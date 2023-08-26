@@ -36,7 +36,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Add Books</h1>
                             </div>
-                            <form id="BooksEdit" data-sb-form-api-token="API_TOKEN" action="/edit_in_bk_chem/{{book_data.sr_no}}"autocomplete="on" method="post">
+                            <form id="BooksEdit" data-sb-form-api-token="API_TOKEN" action="/edit_in_bk_chem/{{book_data.sr_no}}"autocomplete="on" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" name="bk_name" class="form-control form-control-user" id="exampleBookName"
@@ -53,6 +53,11 @@
                                     <input type="text" class="form-control form-control-user" id="exampleID"
                                         placeholder="Book ID" name="bk_id" required value="{{book_data.bk_id}}" data-sb-validations="required">
                                     <div class="invalid-feedback" data-sb-feedback="bk_id:required">Book ID Required</div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" class="form-control form-control-user" id="exampleID"
+                                        placeholder="File path" name="bk_file" required value="{{book_data.file_path}}" data-sb-validations="required">
+                                    <div class="invalid-feedback" data-sb-feedback="bk_id:required">img</div>
                                 </div>
                                 <input style="font-size:19px" type="submit" value="Submit" class="btn btn-primary btn-user btn-block" >
                                 <hr>
