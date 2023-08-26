@@ -679,5 +679,25 @@ def edit_in_csaiml(sr_no):
 def editBack():
     return redirect("/edit_book")
 
+@app.route("/search" , methods=['GET'])
+def search():
+    query = request.args.get('search')
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    tables = ['bks_chem' , 'bks_com' , 'bks_it' , 'bks_entc' , 'bks_mech' , 'bks_csai' , 'bks_csaiml' , 'bks_aids' , 'bks_instru']
+
+    # sql_query = "SELECT * FROM bks_chem WHERE bk_name LIKE %s"
+    # cursor.execute(sql_query, ('%' + query + '%',))  # Make sure the argument is a tuple
+
+    result = []
+    for table in tables:
+        sql_query = f"SELECT bk_name FROM {table} WHERE bk_name LIKE %s"
+        cursor.execute(sql_query, ('%' + query + '%',))
+        table_result = cursor.fetchall()
+        result.extend(table_result)
+
+    return render_template('search.html' , result = result)
+
+
 
 app.run(host="localhost", debug=True)
