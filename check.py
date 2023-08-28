@@ -37,7 +37,7 @@ def login():
         account = cursor.fetchone()
         if account:
             session['loggedin'] = True
-            session['id'] = account['id']
+            session['prn'] = account['prn']
             session['email_add'] = account['email_add']
             msg = 'Logged in successfully!'
             return render_template('index.html', msg=msg, params=params)
@@ -50,7 +50,7 @@ def login():
 @app.route('/logout')
 def logout():
 	session.pop('loggedin', None)
-	session.pop('id', None)
+	session.pop('prn', None)
 	session.pop('username', None)
 	return redirect(url_for('login'))
 
@@ -58,7 +58,8 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
-    if request.method == 'POST' and 'first_name' in request.form and 'last_name' in request.form and 'email_add' in request.form and 'password' in request.form:
+    if request.method == 'POST' and 'first_name' in request.form and 'last_name' in request.form and 'email_add' in request.form and 'password' in request.form and 'prn' in request.form:
+        prn = request.form['prn']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email_add = request.form['email_add']
@@ -76,8 +77,8 @@ def register():
             msg = 'Name must contain only characters and numbers!'
         else:
             cursor.execute(
-                'INSERT INTO accounts (first_name, last_name, email_add, password, repeat_password, date_time, phone_number) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP, %s)',
-                (first_name, last_name, email_add, password, repeat_password, phone_number,))
+                'INSERT INTO accounts ( prn,first_name, last_name, email_add, password, repeat_password, date_time, phone_number) VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP, %s)',
+                (prn,first_name, last_name, email_add, password, repeat_password, phone_number))
 
             mysql.connection.commit()
             msg = 'You have successfully registered! Go to login'
@@ -425,6 +426,32 @@ def edit_in_chem(sr_no):
         return redirect("/edit_chem")
     else:
         return render_template("edit.html", book_data=book_data ,dep="chem")
+    
+# @app.route("/delete_chem/<int:sr_no>", methods=["GET", "POST"])
+# def delete_chem(sr_no):
+#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+#     cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
+#     book_data = cursor.fetchone()
+#     cursor.close()
+
+#     if request.method == "POST":
+#         confirmed = request.form.get("confirmed")
+#         if confirmed == "yes":
+#             try:
+#                 old_filename = book_data['file_path']
+#                 cursor = mysql.connection.cursor()
+#                 cursor.execute("DELETE FROM bks_chem WHERE sr_no = %s", (sr_no,))
+#                 mysql.connection.commit()
+#                 os.remove(old_filename)
+#                 cursor.close()
+#             except Exception as e:
+#                 print("An error occurred:", str(e))
+#             return redirect("/edit_chem")
+#         else:
+#             return redirect("/edit_chem")  # Redirect back without deleting
+
+#     return render_template("delete_confirmation.html", book_data=book_data)
+
 
 @app.route('/edit_comp')
 def edit_comp():
@@ -685,13 +712,10 @@ def search():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
     tables = ['bks_chem' , 'bks_com' , 'bks_it' , 'bks_entc' , 'bks_mech' , 'bks_csai' , 'bks_csaiml' , 'bks_aids' , 'bks_instru']
-
-    # sql_query = "SELECT * FROM bks_chem WHERE bk_name LIKE %s"
-    # cursor.execute(sql_query, ('%' + query + '%',))  # Make sure the argument is a tuple
-
+    
     result = []
     for table in tables:
-        sql_query = f"SELECT bk_name FROM {table} WHERE bk_name LIKE %s"
+        sql_query = f"SELECT * FROM {table} WHERE bk_name LIKE %s"
         cursor.execute(sql_query, ('%' + query + '%',))
         table_result = cursor.fetchall()
         result.extend(table_result)
