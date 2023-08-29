@@ -427,21 +427,6 @@ def edit_in_chem(sr_no):
     else:
         return render_template("edit.html", book_data=book_data ,dep="chem")
     
-@app.route('/delete_chem/<int:sr_no>' , methods=['GET' , 'POST'])
-def delete_chem(sr_no):
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
-    book_data = cursor.fetchone()
-    try:
-        file = book_data['file_path']
-        cursor.execute('DELETE FROM bks_chem WHERE sr_no = %s' , (sr_no,))
-        mysql.connection.commit()
-        os.remove(file)
-    except Exception as e:
-            print("An error occurred:", str(e))
-    cursor.close()
-    return redirect("/edit_chem" )
-    
 
 @app.route('/edit_comp')
 def edit_comp():
@@ -713,6 +698,24 @@ def search():
         result.extend(table_result)
 
     return render_template('search.html' , result = result)
+
+
+@app.route('/delete/<int:sr_no>' , methods=['GET' , 'POST'])
+def delete_chem(sr_no):
+    s = request.form.get('constant_string')
+    print(s)
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM {} WHERE sr_no = %s".format(s), (sr_no,))
+    book_data = cursor.fetchone()
+    try:
+        file = book_data['file_path']
+        cursor.execute('DELETE FROM {} WHERE sr_no = %s'.format(s), (sr_no,))
+        mysql.connection.commit()
+        os.remove(file)
+    except Exception as e:
+            print("An error occurred:", str(e))
+    cursor.close()
+    return redirect("/edit_chem" )
 
 
 
