@@ -427,31 +427,21 @@ def edit_in_chem(sr_no):
     else:
         return render_template("edit.html", book_data=book_data ,dep="chem")
     
-# @app.route("/delete_chem/<int:sr_no>", methods=["GET", "POST"])
-# def delete_chem(sr_no):
-#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-#     cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
-#     book_data = cursor.fetchone()
-#     cursor.close()
-
-#     if request.method == "POST":
-#         confirmed = request.form.get("confirmed")
-#         if confirmed == "yes":
-#             try:
-#                 old_filename = book_data['file_path']
-#                 cursor = mysql.connection.cursor()
-#                 cursor.execute("DELETE FROM bks_chem WHERE sr_no = %s", (sr_no,))
-#                 mysql.connection.commit()
-#                 os.remove(old_filename)
-#                 cursor.close()
-#             except Exception as e:
-#                 print("An error occurred:", str(e))
-#             return redirect("/edit_chem")
-#         else:
-#             return redirect("/edit_chem")  # Redirect back without deleting
-
-#     return render_template("delete_confirmation.html", book_data=book_data)
-
+@app.route('/delete_chem/<int:sr_no>' , methods=['GET' , 'POST'])
+def delete_chem(sr_no):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
+    book_data = cursor.fetchone()
+    try:
+        file = book_data['file_path']
+        cursor.execute('DELETE FROM bks_chem WHERE sr_no = %s' , (sr_no,))
+        mysql.connection.commit()
+        os.remove(file)
+    except Exception as e:
+            print("An error occurred:", str(e))
+    cursor.close()
+    return redirect("/edit_chem" )
+    
 
 @app.route('/edit_comp')
 def edit_comp():
@@ -485,9 +475,11 @@ def edit_in_comp(sr_no):
         return render_template("edit.html", book_data=book_data , dep = "comp")
 
 
+
 @app.route('/edit_it')
 def edit_it():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    
     cur.execute("SELECT * FROM bks_it")
     user = cur.fetchall()
     return render_template('edit_it.html', user=user)
