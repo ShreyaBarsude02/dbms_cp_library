@@ -21,21 +21,19 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
-                                        <tr>
-                                            <th>Sr No.</th>
+                                        <tr> 
+                                            <th>Book ID</th>
                                             <th>Book Name</th>
                                             <th>Book Description</th>
-                                            <th>Book ID</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Sr No.</th>
+                                            <th>Book ID</th>
                                             <th>Book Name</th>
                                             <th>Book Description</th>
-                                            <th>Book ID</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
                                         </tr>
@@ -43,12 +41,11 @@
                                     <tbody>
                                         {% for book in user %}
                                         <tr>
-                                            <td>{{book.sr_no}}</td>
+                                            <td>{{book.bk_id}}</td>
                                             <td>{{book.bk_name}}</td>
                                             <td>{{book.bk_des}}</td>
-                                            <td>{{book.bk_id}}</td>
                                             <td> <a href="/edit_in_bk_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Edit</button></a> </td>
-                                            <td><a href="/delete/{{book.sr_no}}"></a> <button class = "btn btn-primary">Delete</button> </td>
+                                            <td><a href="/delete_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Delete</button></a> </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
