@@ -48,7 +48,12 @@
                                             <td>{{book.bk_des}}</td>
                                             <td>{{book.bk_id}}</td>
                                             <td> <a href="/edit_in_bk_entc/{{book.sr_no}}"> <button class = "btn btn-primary">Edit</button></a> </td>
-                                            <td><a href="/delete/{{book.sr_no}}"></a> <button class = "btn btn-primary">Delete</button> </td>
+                                            <td>
+                                                <form action="{{ url_for('delete', sr_no=book.sr_no) }}" method="post">
+                                                    <input type="hidden" name="constant_string" value="bks_entc">
+                                                    <button class="btn btn-primary">Delete</button> 
+                                                </form>
+                                              </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
