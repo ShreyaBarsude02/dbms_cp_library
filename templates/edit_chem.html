@@ -47,9 +47,10 @@
                                             <td> <a href="/edit_in_bk_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Edit</button></a> </td>
                                             <!-- <td><a href="/delete_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Delete</button></a> </td> -->
                                           <td>
-                                            <form action="{{ url_for('delete', sr_no=book.sr_no) }}" method="post">
-                                                <input type="hidden" name="constant_string" value="bks_chem">
-                                                <button class="btn btn-primary">Delete</button> 
+                                            <form action="{{ url_for('delete', sr_no=book.sr_no) }}" method="post" id="form">
+                                                <input type="hidden" name="table_name" value="bks_chem">
+                                                <input type="hidden" name="confirm" id="confirm" value="no">
+                                                <button class="btn btn-primary" onclick="deleteConfirm()">Delete</button> 
                                             </form>
                                           </td>
                                         </tr>
@@ -62,6 +63,7 @@
 
                 </div>
                 <!-- /.container-fluid -->
+                <script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
 
             </div>
             <!-- End of Main Content -->
