@@ -701,19 +701,21 @@ def search():
 
 
 @app.route('/delete/<int:sr_no>' , methods=['GET' , 'POST'])
-def delete_chem(sr_no):
-    s = request.form.get('constant_string')
-    print(s)
+def delete(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM {} WHERE sr_no = %s".format(s), (sr_no,))
-    book_data = cursor.fetchone()
-    try:
-        file = book_data['file_path']
-        cursor.execute('DELETE FROM {} WHERE sr_no = %s'.format(s), (sr_no,))
-        mysql.connection.commit()
-        os.remove(file)
-    except Exception as e:
-            print("An error occurred:", str(e))
+    confirm = request.form.get('confirm')
+    if confirm == "yes":
+         table = request.form.get('table_name')
+         cursor.execute("SELECT * FROM {} WHERE sr_no = %s".format(table), (sr_no,))
+         book_data = cursor.fetchone()
+         try:
+             file = book_data['file_path']
+             cursor.execute('DELETE FROM {} WHERE sr_no = %s'.format(table), (sr_no,))
+             mysql.connection.commit()
+             os.remove(file)
+         except Exception as e:
+                 print("An error occurred:", str(e))
+    
     cursor.close()
     return redirect("/edit_chem" )
 
