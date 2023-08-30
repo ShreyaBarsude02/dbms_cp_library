@@ -178,6 +178,7 @@ def add_book():
         bk_name = details['bookName']
         bk_des = details['bookDesc']
         bk_id = details['bookId']
+        bk_author = details['author']
         
         if 'chem' in session and session['chem']:
             if 'file' in request.files:
@@ -187,7 +188,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('chem')
@@ -200,7 +201,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_com(bk_name, bk_des, bk_id , file_path) VALUES (%s, %s, %s , %s)", (bk_name, bk_des, bk_id , file_path))
+                    cur.execute("INSERT INTO bks_com(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('com')
@@ -213,7 +214,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_it(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_it(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('it')
@@ -226,7 +227,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_instru(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_instru(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('instru')
@@ -239,7 +240,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_mech(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_mech(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('mech')
@@ -252,7 +253,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_entc(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_entc(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('entc')
@@ -265,7 +266,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_aids(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_aids(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('aids')
@@ -278,7 +279,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_csai(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_csai(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('csai')
@@ -291,7 +292,7 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_csaiml(bk_name, bk_des, bk_id, file_path) VALUES (%s, %s, %s, %s)", (bk_name, bk_des, bk_id, file_path))
+                    cur.execute("INSERT INTO bks_csaiml(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
                     mysql.connection.commit()
                     cur.close()
                     session.pop('csaiml')
@@ -685,7 +686,7 @@ def editBack():
 
 @app.route("/search" , methods=['GET'])
 def search():
-    query = request.args.get('search')
+    search = request.args.get('search')
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
     tables = ['bks_chem' , 'bks_com' , 'bks_it' , 'bks_entc' , 'bks_mech' , 'bks_csai' , 'bks_csaiml' , 'bks_aids' , 'bks_instru']
@@ -693,7 +694,7 @@ def search():
     result = []
     for table in tables:
         sql_query = f"SELECT * FROM {table} WHERE bk_name LIKE %s"
-        cursor.execute(sql_query, ('%' + query + '%',))
+        cursor.execute(sql_query, ('%' + search + '%',))
         table_result = cursor.fetchall()
         result.extend(table_result)
 
