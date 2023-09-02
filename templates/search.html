@@ -27,7 +27,7 @@
                     <tbody>
                         {% for result in result %}
                         <tr>
-                        <td><div class="col-md-4"  style="min-height: 100%; max-width: 200px;">
+                        <td style="width: 150px;"><div class="col-md-4"  style="min-height: 100%; max-width: 200px;">
                             <img src="/static/{{ result['file_path']|replace('E:\\CP_Sy\\dbms_cp_library\\static\\', '')|replace('\\', '/') }}" class="img-fluid rounded-start" style="min-height: 100%; max-width: 100%;" alt="Book Img">
                           </div></td>           
                         <td>{{result['bk_id']}}</td>           
@@ -43,6 +43,44 @@
 
 </div>
 <!-- /.container-fluid -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Retaled Books</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary"></h6>
+            
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>           
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>Dept</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        {% for author_books in author_books %}
+                        <tr>
+                        <td>{{author_books['bk_id']}}</td>           
+                        <td>{{author_books['bk_name']}}</td>           
+                        <td>{{author_books['dept']}}</td>           
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+         
+    </div>
 
 </div>
 
