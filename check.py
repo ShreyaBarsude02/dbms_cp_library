@@ -188,19 +188,24 @@ def add_book():
         dept = session['dept']
         dept_id = session['dept_id']
         
-        if 'file' in request.files:
-            file = request.files['file']
-            if file.filename != '':
-                filename = secure_filename(file.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
-                cur = mysql.connection.cursor()
-                cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path) VALUES (%s,%s,%s, %s, %s, %s,%s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path))
-                mysql.connection.commit()
-                cur.close()
-                session.pop('dept_id')
-                session.pop('dept')
-        return render_template('add_book.html')
+        try:
+            if 'file' in request.files:
+                file = request.files['file']
+                if file.filename != '':
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(file_path)
+                    cur = mysql.connection.cursor()
+                    cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path) VALUES (%s,%s,%s, %s, %s, %s,%s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path))
+                    mysql.connection.commit()
+                    cur.close()
+                    
+                    return render_template('add_book.html')
+        except Exception as e:
+            print(e)
+            flash("Book ID should be UNIQUE") 
+            return render_template('add_book.html')
+        
     return render_template('add_book.html')
 
     
@@ -238,6 +243,8 @@ def admin_login():
 
 @app.route('/admin_logout')
 def admin_logout():
+    session.pop('dept_id')
+    session.pop('dept')
     session.pop('user')
     return redirect('/index')
 
