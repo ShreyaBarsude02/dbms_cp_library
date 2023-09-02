@@ -113,63 +113,69 @@ def tables():
 
 @app.route('/AIDS')
 def AIDS():
-    return render_template('AIDS.html')
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM books where dept = 'AIDS' ")
+    data = cur.fetchall()
+    return render_template('AIDS.html',data=data)
 
 @app.route('/Chemical')
 def Chemical():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_chem")
+    cur.execute("SELECT * FROM books where dept = 'Chemical' ")
     data = cur.fetchall()
     return render_template('Chemical.html',data=data)
 
 @app.route('/Computer')
 def Computer():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_com")
+    cur.execute("SELECT * FROM books where dept = 'Computer'")
     data = cur.fetchall()
     return render_template('Computer.html',data=data)
 
 @app.route('/CS_AI')
 def CS_AI():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_csai")
+    cur.execute("SELECT * FROM books where dept = 'CSAI' ")
     data = cur.fetchall()
     return render_template('CS_AI.html',data=data)
 
 @app.route('/CS_AIML')
 def CS_AIML():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_csaiml")
+    cur.execute("SELECT * FROM books where dept = 'CSAIML' ")
     data = cur.fetchall()
     return render_template('CS_AIML.html',data=data)
 
 @app.route('/ENTC')
 def ENTC():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_entc")
+    cur.execute("SELECT * FROM books where dept = 'ENTC' ")
     data = cur.fetchall()
     return render_template('ENTC.html',data=data)
 
 @app.route('/Information_tech')
 def Information_tech():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_it")
+    cur.execute("SELECT * FROM books where dept = 'InformationTech'")
     data = cur.fetchall()
     return render_template('Information_tech.html',data=data)
 
 @app.route('/Instrumentation')
 def Instrumentation():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_instru")
+    cur.execute("SELECT * FROM books where dept = 'Instrumentation' ")
     data = cur.fetchall()
     return render_template('Instrumentation.html',data=data)
 
 @app.route('/Mechanical')
 def Mechanical():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_mech")
+    cur.execute("SELECT * FROM books where dept = 'Mechinacal' ")
     data = cur.fetchall()
     return render_template('Mechanical.html',data=data)
+
+
+
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
@@ -178,128 +184,26 @@ def add_book():
         bk_name = details['bookName']
         bk_des = details['bookDesc']
         bk_id = details['bookId']
-        bk_author = details['author']
+        author = details['author']
+        dept = session['dept']
+        dept_id = session['dept_id']
         
-        if 'chem' in session and session['chem']:
-            if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_chem(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('chem')
-
-        elif 'com' in session and session['com']:
-             if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_com(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('com')
-
-        elif 'it' in session and session['it']:
-           if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_it(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('it')
-
-        elif 'instru' in session and session['instru']:
-            if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_instru(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('instru')
-
-        elif 'mech' in session and session['mech']:
-             if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_mech(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('mech')
-
-        elif 'entc' in session and session['entc']:
-             if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_entc(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('entc')
-
-        elif 'aids' in session and session['aids']:
-             if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_aids(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('aids')
-
-        elif 'csai' in session and session['csai']:
-            if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_csai(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('csai')
-
-        elif 'csaiml' in session and session['csaiml']:
-            if 'file' in request.files:
-                file = request.files['file']
-                if file.filename != '':
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO bks_csaiml(bk_name, bk_des, bk_id, file_path , author) VALUES (%s, %s, %s, %s ,%s)", (bk_name, bk_des, bk_id, file_path , bk_author))
-                    mysql.connection.commit()
-                    cur.close()
-                    session.pop('csaiml')
-
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path) VALUES (%s,%s,%s, %s, %s, %s,%s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path))
+                mysql.connection.commit()
+                cur.close()
+                session.pop('dept_id')
+                session.pop('dept')
         return render_template('add_book.html')
-    
     return render_template('add_book.html')
+
+    
 
 @app.route('/edit_book')
 def eb():
@@ -339,55 +243,73 @@ def admin_logout():
 
 @app.route('/add_chem')
 def add_chem():
-     session['chem'] = True
+     session['dept'] = "Chemical"
+     session['dept_id'] = "D1"
+    #  session['chem'] = True
      session['add'] = True
      return render_template('admin_login.html')
      
 @app.route('/add_com')
 def add_com():
-     session['com'] = True
+     session['dept'] = "Computer"
+     session['dept_id'] = "D2"
+    #  session['com'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_it')
 def add_it():
-     session['it'] = True
+     session['dept'] = "InformationTech"
+     session['dept_id'] = "D7"
+    #  session['it'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_instru')
 def add_instru():
-     session['instru'] = True
+     session['dept'] = "Instrumentation"
+     session['dept_id'] = "D6"
+     #  session['instru'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_mech')
 def add_mech():
-     session['mech'] = True
+     session['dept'] = "Mechinacal"
+     session['dept_id'] = "D8"
+    #  session['mech'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_entc')
 def add_entc():
-     session['entc'] = True
+     session['dept'] = "ENTC"
+     session['dept_id'] = "D5"
+    #  session['entc'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_aids')
 def add_aids():
-     session['aids'] = True
+     session['dept'] = "AIDS"
+     session['dept_id'] = "D0"
+    #  session['aids'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_csai')
 def add_csai():
-     session['csai'] = True
+     session['dept'] = "CSAI"
+     session['dept_id'] = "D3"
+    #  session['csai'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
 @app.route('/add_csaiml')
 def add_csaiml():
-     session['csaiml'] = True
+     session['dept'] = "CSAIML"
+     session['dept_id'] = "D4"
+    #  session['csaiml'] = True
      session['add'] = True
      return render_template('admin_login.html')
 
@@ -400,14 +322,14 @@ def edit_books():
 @app.route('/edit_chem')
 def edit_chem():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_chem")
+    cur.execute("SELECT * FROM books where dept = 'Chemical' ")
     user = cur.fetchall()
     return render_template('edit_chem.html', user=user)
 
 @app.route("/edit_in_bk_chem/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_chem(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_chem WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'Chemical' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -418,7 +340,7 @@ def edit_in_chem(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_chem SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'Chemical' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -432,14 +354,14 @@ def edit_in_chem(sr_no):
 @app.route('/edit_comp')
 def edit_comp():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_com")
+    cur.execute("SELECT * FROM books where dept = 'Computer'")
     user = cur.fetchall()
     return render_template('edit_comp.html', user=user)
 
 @app.route("/edit_in_bk_comp/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_comp(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_com WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'Computer' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -450,7 +372,7 @@ def edit_in_comp(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_com SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'Computer' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -465,15 +387,14 @@ def edit_in_comp(sr_no):
 @app.route('/edit_it')
 def edit_it():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    
-    cur.execute("SELECT * FROM bks_it")
+    cur.execute("SELECT * FROM books where dept = 'InformationTech'")
     user = cur.fetchall()
     return render_template('edit_it.html', user=user)
 
 @app.route("/edit_in_bk_it/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_it(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_it it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'InformationTech' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -484,7 +405,7 @@ def edit_in_it(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_it SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'InformationTech' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -497,14 +418,14 @@ def edit_in_it(sr_no):
 @app.route('/edit_instru')
 def edit_instru():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_instru")
+    cur.execute("SELECT * FROM books where dept = 'Instrumentation'")
     user = cur.fetchall()
     return render_template('edit_instru.html', user=user)
 
 @app.route("/edit_in_bk_instru/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_instru(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_instru it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'Instrumentation' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -515,7 +436,7 @@ def edit_in_instru(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_instru SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'Instrumentation' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -528,14 +449,14 @@ def edit_in_instru(sr_no):
 @app.route('/edit_mech')
 def edit_mech():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_mech")
+    cur.execute("SELECT * FROM books where dept = 'Mechinacal'")
     user = cur.fetchall()
     return render_template('edit_mech.html', user=user)
 
 @app.route("/edit_in_bk_mech/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_mech(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_mech it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'Mechinacal' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -546,7 +467,7 @@ def edit_in_mech(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_mech SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'Mechinacal' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -559,14 +480,14 @@ def edit_in_mech(sr_no):
 @app.route('/edit_entc')
 def edit_entc():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_entc")
+    cur.execute("SELECT * FROM books where dept = 'ENTC'")
     user = cur.fetchall()
     return render_template('edit_entc.html', user=user)
 
 @app.route("/edit_in_bk_entc/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_entc(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_entc it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'ENTC' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -577,7 +498,7 @@ def edit_in_entc(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_entc SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'ENTC' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -590,14 +511,14 @@ def edit_in_entc(sr_no):
 @app.route('/edit_aids')
 def edit_aids():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_aids")
+    cur.execute("SELECT * FROM books where dept = 'AIDS'")
     user = cur.fetchall()
     return render_template('edit_aids.html', user=user)
 
 @app.route("/edit_in_bk_aids/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_aids(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_aids it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'AIDS' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -608,7 +529,7 @@ def edit_in_aids(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_aids SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'AIDS' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -621,14 +542,14 @@ def edit_in_aids(sr_no):
 @app.route('/edit_csai')
 def edit_csai():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_csai")
+    cur.execute("SELECT * FROM books where dept = 'CSAI'")
     user = cur.fetchall()
     return render_template('edit_csai.html', user=user)
 
 @app.route("/edit_in_bk_csai/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_csai(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_csai it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'CSAI' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -639,7 +560,7 @@ def edit_in_csai(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_csai SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'CSAI' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -652,14 +573,14 @@ def edit_in_csai(sr_no):
 @app.route('/edit_csaiml')
 def edit_csaiml():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM bks_csaiml")
+    cur.execute("SELECT * FROM books where dept = 'CSAIML'")
     user = cur.fetchall()
     return render_template('edit_csaiml.html', user=user)
 
 @app.route("/edit_in_bk_csaiml/<int:sr_no>", methods=["GET", "POST"])
 def edit_in_csaiml(sr_no):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM bks_csaiml it WHERE sr_no = %s", (sr_no,))
+    cursor.execute("SELECT * FROM books WHERE dept = 'CSAIML' AND sr_no = %s", (sr_no,))
     book_data = cursor.fetchone()
     old_filename = book_data['file_path']# retrieving old img path from db
     if request.method == "POST":
@@ -670,7 +591,7 @@ def edit_in_csaiml(sr_no):
         filenaemEdit = secure_filename(bk_file.filename)#securing name of file 
         filepathEdit=os.path.join(app.config['UPLOAD_FOLDER'],filenaemEdit)#joining folder path with filename 
         bk_file.save(filepathEdit)#seving file to staric/img folder
-        query = "UPDATE bks_csaiml SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE sr_no = %s"
+        query = "UPDATE books SET bk_name = %s, bk_des = %s, bk_id=%s, file_path=%s WHERE dept = 'CSAIML' AND sr_no = %s"
         values = (bk_name, bk_des, bk_id,filepathEdit,sr_no)
         cursor.execute(query, values)
         mysql.connection.commit()
@@ -686,39 +607,52 @@ def editBack():
 
 @app.route("/search" , methods=['GET'])
 def search():
-    search = request.args.get('search')
+    query = request.args.get('search')
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-
-    tables = ['bks_chem' , 'bks_com' , 'bks_it' , 'bks_entc' , 'bks_mech' , 'bks_csai' , 'bks_csaiml' , 'bks_aids' , 'bks_instru']
     
-    result = []
-    for table in tables:
-        sql_query = f"SELECT * FROM {table} WHERE bk_name LIKE %s"
-        cursor.execute(sql_query, ('%' + search + '%',))
-        table_result = cursor.fetchall()
-        result.extend(table_result)
+    # Execute the main query to fetch all columns for the search query
+    sql_query = "SELECT * FROM books WHERE bk_name = %s"
+    cursor.execute(sql_query, (query,))
+    table_result = cursor.fetchall()
+    
+    # Execute a separate query to fetch the 'author' column for the same search query
+    cursor.execute("SELECT author FROM books WHERE bk_name = %s", (query,))
+    auth_result = cursor.fetchone()  # Use fetchone() to get a single result
+    
+    # Extract the 'author' value as a string
+    auth = auth_result['author'] if auth_result else None
+    
+    # creating view for search
+    cursor.execute("create or replace view search as select bk_name ,bk_id ,dept from books where author = %s", (auth,))
 
-    return render_template('search.html' , result = result)
+    cursor.execute("SELECT * FROM books WHERE author = %s", (auth,))
+    author_books = cursor.fetchall()
+
+
+    return render_template('search.html', result=table_result , author_books = author_books)
+
 
 
 @app.route('/delete/<int:sr_no>' , methods=['GET' , 'POST'])
 def delete(sr_no):
+    previous_url = request.referrer
+
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     confirm = request.form.get('confirm')
     if confirm == "yes":
-         table = request.form.get('table_name')
-         cursor.execute("SELECT * FROM {} WHERE sr_no = %s".format(table), (sr_no,))
+        #  table = request.form.get('table_name')
+         cursor.execute("SELECT * FROM books WHERE sr_no = %s", (sr_no,))
          book_data = cursor.fetchone()
          try:
              file = book_data['file_path']
-             cursor.execute('DELETE FROM {} WHERE sr_no = %s'.format(table), (sr_no,))
+             cursor.execute('DELETE FROM books WHERE sr_no = %s', (sr_no,))
              mysql.connection.commit()
              os.remove(file)
          except Exception as e:
                  print("An error occurred:", str(e))
     
     cursor.close()
-    return redirect("/edit_chem" )
+    return redirect(previous_url)
 
 
 
