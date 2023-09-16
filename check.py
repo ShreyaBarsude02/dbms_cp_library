@@ -6,6 +6,13 @@ import json
 import mysql.connector
 from werkzeug.utils import secure_filename
 import os
+import datetime
+import cv2 
+from pyzbar.pyzbar import decode
+from datetime import timedelta
+import calendar
+
+scanning = False
 
 with open("config.json","r") as c:
     params= json.load(c) ["params"]
@@ -14,19 +21,31 @@ app = Flask(__name__)
 
 app.secret_key = 'your secret key'
 
+
+prn1 = None
+
+
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here
+app.config['MYSQL_PASSWORD'] = 'Sucasa@2021' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
 app.config['UPLOAD_FOLDER'] = params['upload_location']
 
 
 mysql = MySQL(app)
+count = 0
+
+
+
+
+
 
 
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    
     msg = ''
     if request.method == 'POST' and 'email_add' in request.form and 'password' in request.form:
         email_add = request.form['email_add']
@@ -40,7 +59,25 @@ def login():
             session['prn'] = account['prn']
             session['email_add'] = account['email_add']
             msg = 'Logged in successfully!'
-            return render_template('index.html', msg=msg, params=params)
+            current_datetime = datetime.datetime.now()
+            currentdate = current_datetime.date()
+            session['count'] = count
+
+
+            # cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # cur.execute("SELECT * FROM book_issue where count = '1' AND prn = session['prn']" )
+            # data = cur.fetchall()
+
+
+
+            query = "SELECT * FROM book_issue WHERE count = %s AND prn = %s"
+            cursor.execute(query, ('1', session['prn']))
+            data = cursor.fetchall()
+
+
+
+            
+            return render_template('index.html', msg=msg, params=params, currentdate=currentdate, data=data)
         else:
             flash('Invalid email or password.')
     return render_template('login.html', params=params)
@@ -59,7 +96,11 @@ def logout():
 def register():
     msg = ''
     if request.method == 'POST' and 'first_name' in request.form and 'last_name' in request.form and 'email_add' in request.form and 'password' in request.form and 'prn' in request.form:
+        # prn = request.form['prn']
         prn = request.form['prn']
+        session['prn'] = prn  # Store the prn in the session
+        # Other registration logic
+        # print("this is ", prn1)
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email_add = request.form['email_add']
@@ -190,6 +231,7 @@ def add_book():
         
         try:
             if 'file' in request.files:
+                
                 file = request.files['file']
                 if file.filename != '':
                     filename = secure_filename(file.filename)
@@ -660,6 +702,112 @@ def delete(sr_no):
     
     cursor.close()
     return redirect(previous_url)
+
+
+
+def process_form():
+    global user_input  # Use the global keyword to modify the global variable
+    user_input = request.form.get('user_input')
+    # return f"You entered the number: {user_input}"
+
+
+@app.route('/issue_book_chemical/<int:sr_no>', methods=['GET', 'POST'])
+
+def issue_book_chemical(sr_no):
+    previous_url = request.referrer
+    if request.method == "POST":
+        # current_datetime = datetime.datetime.now()
+
+        current_datetime = datetime.datetime.now()
+        currentdate = current_datetime.date()
+        # print("I am here  1")
+
+        
+        
+        
+        details = request.form
+        book1_name = details['book1_name']
+        
+
+        count = session.get('count', 0)
+        count = 1
+        session['count'] = count
+        
+        current_date_time = current_datetime.strftime("%B %d, %Y")
+
+        # print("current date and time = ",current_date_time)
+        date_time_return = currentdate   + timedelta(days=7) 
+        
+
+        datetime_return = date_time_return.strftime("%B %d, %Y")
+        # date_time = details['current_datetime']
+        # print("I am here  1")
+        
+        global scanning 
+        scanning=True
+
+        cap = cv2.VideoCapture(0)
+        while scanning:
+            ret, frame = cap.read() #This line reads a frame from the camera feed. ret is a boolean indicating whether the frame was successfully read, and frame contains the image data.
+            if not ret:
+                continue
+
+            decoded_objects = decode(frame)
+            for obj in decoded_objects:
+                prn = obj.data.decode('utf-8')
+                 
+                # You can do something with the barcode data here.
+                    
+                    
+                    # Stop scanning after a QR code is detected
+                scanning = False
+
+                cv2.imshow('Barcode Scanner', frame)
+                if cv2.waitKey(1) & 0xFF == 27:  # Press 'Esc' to exit the barcode scanner.
+                    break
+
+        cap.release()
+        cv2.destroyAllWindows()
+        # print(f'Barcode Data: {barcode_data}')
+        
+
+
+
+        cur = mysql.connection.cursor()
+        # details = request.form
+        
+        cur.execute("INSERT INTO book_issue (book1_name, date_time, prn, date_time_return, count) VALUES (%s, %s, %s, %s, %s)",
+                   (book1_name, currentdate, prn, date_time_return, count))
+        mysql.connection.commit()
+        cur.close()
+        # print("I am here  1")
+
+
+
+        # current_datetime = datetime.datetime.now()
+        # currentdate = current_datetime.date()
+        
+        # currentdate and date_time_return - > for equating 
+        # current_date_time and datetime_return - > for format printing
+
+
+        # current_dt_unfor = current_datetime;
+
+       
+
+        # print(date_time_return) 
+        # print("The current date is ", currentdate)
+
+        # print("the date of return of this book is ", date_time_return)
+
+        
+        # return render_template('Chemical.html',data=data)
+            
+        return render_template("layout.html", book1_name=book1_name, currentdate=currentdate,  date_time_return=date_time_return, current_date_time=current_date_time, datetime_return=datetime_return, count=count)
+        
+        
+    # return render_template('add_book.html')
+
 
 
 
