@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+    <style>
+      *{
+        margin: 0;
+      }
+      body {
+        height: 98vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #4e73df;
+      }
+      body {
+          height: 98vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          background-color: #4e73df;
+        }
+        .sam_main {
+          display: flex;
+        }
+        .sam_card {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          height: 250px;
+          width: 350px;
+          margin: 50px;
+          border-radius: 5px;
+          background-color: white;
+          box-shadow: -5px -5px #3c3c3c98;
+        }
+        .sam_card:hover{
+          box-shadow: 10px 10px #191919;
+          transition: 0.2s ease;
+          
+        }
+        a{
+            text-decoration: none;
+            color: black;
+            font-size: 50px;
+            font-weight: 700;
+        }
+      .student {
+      }
+      .admin {
+      }
+      .header{
+        font-size: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 80px;
+        background-color: rgb(109, 176, 243);
+        color: white;
+        
+      }
+       
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="header">
+      Welcome to Vit Library
+    </div>
+    <div class="sam_main">
+      <div class="student sam_card">
+         
+        <a href="/login">student</a>
+      </div>
+      <div class="admin sam_card"><a href="/admin_login_page">Admin</a></div>
+    </div>
+  </body>
+</html>
