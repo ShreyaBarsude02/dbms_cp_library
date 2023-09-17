@@ -1,70 +1,69 @@
-{% extends "layout.html" %}
+{% extends "admin_layout.html" %}
 {% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Chemical Books</h1>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Chemical Books</h1>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTable</h6>
-                            <div class="buttons float-right "> 
-                                <a href="/admin_logout"> <button class = "btn btn-primary">LogOut</button></a>
-                                <a href="/editBack"> <button class = "btn btn-primary">Back to edit page</button></a>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr> 
-                                            <th>Book ID</th>
-                                            <th>Book Name</th>
-                                            <th>Book Description</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Book ID</th>
-                                            <th>Book Name</th>
-                                            <th>Book Description</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        {% for book in user %}
-                                        <tr>
-                                            <td>{{book.bk_id}}</td>
-                                            <td>{{book.bk_name}}</td>
-                                            <td>{{book.bk_des}}</td>
-                                            <td> <a href="/edit_in_bk_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Edit</button></a> </td>
-                                            <!-- <td><a href="/delete_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Delete</button></a> </td> -->
-                                          <td>
-                                            <form action="{{ url_for('delete', sr_no=book.sr_no) }}" method="post" id="form">
-                                                <input type="hidden" name="table_name" value="bks_chem">
-                                                <input type="hidden" name="confirm" id="confirm" value="no">
-                                                <button class="btn btn-primary" onclick="deleteConfirm()">Delete</button> 
-                                            </form>
-                                          </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- /.container-fluid -->
-                <script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
-
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTable</h6>
+            <div class="buttons float-right "> 
+                <a href="/admin_flash"> <button class = "btn btn-primary">Back to Home</button></a>
             </div>
-            <!-- End of Main Content -->
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr> 
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>Book Description</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>Book Description</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for book in user %}
+                        <tr>
+                            <td>{{book.bk_id}}</td>
+                            <td>{{book.bk_name}}</td>
+                            <td>{{book.bk_des}}</td>
+                            <td> <a href="/edit_in_bk_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Edit</button></a> </td>
+                            <!-- <td><a href="/delete_chem/{{book.sr_no}}"> <button class = "btn btn-primary">Delete</button></a> </td> -->
+                          <td>
+                            <form action="{{ url_for('delete', sr_no=book.sr_no) }}" method="post" id="form">
+                                <input type="hidden" name="table_name" value="bks_chem">
+                                <input type="hidden" name="confirm" id="confirm" value="no">
+                                <button class="btn btn-primary" onclick="deleteConfirm()">Delete</button> 
+                            </form>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+<script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
+
+</div>
+<!-- End of Main Content -->
+
 {% endblock %}
