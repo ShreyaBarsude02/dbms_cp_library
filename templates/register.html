@@ -37,6 +37,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
 
+                            <!-- check -->
                             {% with messages = get_flashed_messages() %}
                             {% if messages %}
                                 <div class="notification is-danger">
@@ -44,6 +45,8 @@
                                 </div>
                             {% endif %}
                             {% endwith %}
+                            <!-- check -->
+
                             <form class="user" action="http://127.0.0.1:5000/register" method="post">
                                 <div class="msg">{{ msg }}</div>
                                 <div class="form-group row">
