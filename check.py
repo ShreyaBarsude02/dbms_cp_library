@@ -21,36 +21,37 @@ app = Flask(__name__)
 
 app.secret_key = 'your secret key'
 
-
-prn1 = None
-
-
-
+# prn1 = None
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Sucasa@2021' # enter password here
+app.config['MYSQL_PASSWORD'] = 'samarth1' # enter password here
 app.config['MYSQL_DB'] = 'dbms_cp'
-app.config['UPLOAD_FOLDER'] = params['upload_location']
 
+app.config['UPLOAD_FOLDER'] = params['upload_location']
+# app.config['image_path'] = params['img_scr']
 
 mysql = MySQL(app)
 count = 0
 
-
-
-
-
-
-
 @app.route('/')
+def flash_screen():
+    return render_template('flash.html')
+
+@app.route('/admin_flash')
+def admin_flash():
+    return render_template('admin_flash.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT count FROM books_count")
+    count_data = cursor.fetchall()
     msg = ''
     if request.method == 'POST' and 'email_add' in request.form and 'password' in request.form:
         email_add = request.form['email_add']
         password = request.form['password']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+       
         cursor.execute(
             'SELECT * FROM accounts WHERE email_add = %s AND password = %s', (email_add, password,))
         account = cursor.fetchone()
@@ -63,23 +64,15 @@ def login():
             currentdate = current_datetime.date()
             session['count'] = count
 
-
-            # cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            # cur.execute("SELECT * FROM book_issue where count = '1' AND prn = session['prn']" )
-            # data = cur.fetchall()
-
-
-
             query = "SELECT * FROM book_issue WHERE count = %s AND prn = %s"
             cursor.execute(query, ('1', session['prn']))
             data = cursor.fetchall()
 
-
-
-            
-            return render_template('index.html', msg=msg, params=params, currentdate=currentdate, data=data)
+            return render_template('index.html', msg=msg, params=params, currentdate=currentdate, data=data ,count_data = count_data)
         else:
             flash('Invalid email or password.')
+       
+        # cursor.close()
     return render_template('login.html', params=params)
 
 
@@ -89,11 +82,12 @@ def logout():
 	session.pop('loggedin', None)
 	session.pop('prn', None)
 	session.pop('username', None)
-	return redirect(url_for('login'))
+	return redirect('/')
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    
     msg = ''
     if request.method == 'POST' and 'first_name' in request.form and 'last_name' in request.form and 'email_add' in request.form and 'password' in request.form and 'prn' in request.form:
         # prn = request.form['prn']
@@ -132,9 +126,13 @@ def register():
 
 @app.route("/index")
 def index():
-	if 'loggedin' in session:
-		return render_template("index.html", params=params)
-	return redirect(url_for('login'))
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)   
+    cursor.execute("SELECT count FROM books_count")
+    count_data = cursor.fetchall()
+    if 'loggedin' in session:
+        return render_template("index.html", params=params,count_data = count_data)
+    
+    return redirect(url_for('login'))
 
 @app.route('/cards')
 def cards():
@@ -164,14 +162,14 @@ def Chemical():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM books where dept = 'Chemical' ")
     data = cur.fetchall()
-    return render_template('Chemical.html',data=data)
+    return render_template('Chemical.html',data=data , params=params)
 
 @app.route('/Computer')
 def Computer():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM books where dept = 'Computer'")
     data = cur.fetchall()
-    return render_template('Computer.html',data=data)
+    return render_template('Computer.html',data=data,params=params)
 
 @app.route('/CS_AI')
 def CS_AI():
@@ -216,8 +214,6 @@ def Mechanical():
     return render_template('Mechanical.html',data=data)
 
 
-
-
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     if request.method == "POST":
@@ -241,16 +237,20 @@ def add_book():
                     cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path) VALUES (%s,%s,%s, %s, %s, %s,%s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path))
                     mysql.connection.commit()
                     cur.close()
+                    flash("Book Added successfully! ") 
                     
-                    return render_template('add_book.html')
+                    return render_template('admin_flash.html', bk_name = bk_name)
         except Exception as e:
             print(e)
+            # msg = "Book ID should be UNIQUE"
             flash("Book ID should be UNIQUE") 
             return render_template('add_book.html')
         
-    return render_template('add_book.html')
+    return render_template('admin_flash.html')
 
-    
+@app.route('/admin_login_page')
+def admin_login_page():
+    return render_template('admin_login.html') 
 
 @app.route('/edit_book')
 def eb():
@@ -258,115 +258,87 @@ def eb():
 
 @app.route('/admin_login',methods=['GET','POST'])
 def admin_login():
-    if "user" in session and session['user'] == params['admin_user']:
-        if 'add' in session and session['add']:
-             session.pop('add')
-             return render_template("add_book.html")
-        elif 'edit' in session and session['edit']:
-             session.pop('edit')
-             return redirect("/edit_book")
-
     if request.method == "POST":
         username = request.form.get("username")
         userpass = request.form.get("password")
         if username == params['admin_user'] and userpass == params['admin_password']:
-            # set the session variable
-            session['user'] = username
-            if 'add' in session and session['add']:
-                session.pop('add')
-                return render_template("add_book.html")
-            elif 'edit' in session and session['edit']:
-                session.pop('edit')
-                return render_template("edit_books.html")
+            return render_template('admin_flash.html')
     else:
         flash("Incorrect username or password")
         return render_template("admin_login.html")
     return render_template("admin_login.html")
-
+ 
 @app.route('/admin_logout')
 def admin_logout():
-    session.pop('dept_id')
-    session.pop('dept')
-    session.pop('user')
-    return redirect('/index')
+    return redirect('/')
 
 @app.route('/add_chem')
 def add_chem():
      session['dept'] = "Chemical"
      session['dept_id'] = "D1"
-    #  session['chem'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
      
 @app.route('/add_com')
 def add_com():
      session['dept'] = "Computer"
      session['dept_id'] = "D2"
-    #  session['com'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_it')
 def add_it():
      session['dept'] = "InformationTech"
      session['dept_id'] = "D7"
-    #  session['it'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_instru')
 def add_instru():
      session['dept'] = "Instrumentation"
      session['dept_id'] = "D6"
-     #  session['instru'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_mech')
 def add_mech():
      session['dept'] = "Mechinacal"
      session['dept_id'] = "D8"
-    #  session['mech'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_entc')
 def add_entc():
      session['dept'] = "ENTC"
      session['dept_id'] = "D5"
-    #  session['entc'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_aids')
 def add_aids():
      session['dept'] = "AIDS"
      session['dept_id'] = "D0"
-    #  session['aids'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_csai')
 def add_csai():
      session['dept'] = "CSAI"
      session['dept_id'] = "D3"
-    #  session['csai'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/add_csaiml')
 def add_csaiml():
      session['dept'] = "CSAIML"
      session['dept_id'] = "D4"
-    #  session['csaiml'] = True
      session['add'] = True
-     return render_template('admin_login.html')
+     return render_template('add_book.html')
 
 @app.route('/edit_books')
 def edit_books():
-    # return render_template('edit.html',  params=params)
     session['edit'] = True
-    return render_template('admin_login.html')
+    return render_template('add_book.html')
 
 @app.route('/edit_chem')
 def edit_chem():
@@ -734,15 +706,8 @@ def issue_book_chemical(sr_no):
         session['count'] = count
         
         current_date_time = current_datetime.strftime("%B %d, %Y")
-
-        # print("current date and time = ",current_date_time)
         date_time_return = currentdate   + timedelta(days=7) 
-        
-
         datetime_return = date_time_return.strftime("%B %d, %Y")
-        # date_time = details['current_datetime']
-        # print("I am here  1")
-        
         global scanning 
         scanning=True
 
@@ -755,10 +720,7 @@ def issue_book_chemical(sr_no):
             decoded_objects = decode(frame)
             for obj in decoded_objects:
                 prn = obj.data.decode('utf-8')
-                 
                 # You can do something with the barcode data here.
-                    
-                    
                     # Stop scanning after a QR code is detected
                 scanning = False
 
@@ -768,47 +730,14 @@ def issue_book_chemical(sr_no):
 
         cap.release()
         cv2.destroyAllWindows()
-        # print(f'Barcode Data: {barcode_data}')
-        
-
-
 
         cur = mysql.connection.cursor()
-        # details = request.form
-        
         cur.execute("INSERT INTO book_issue (book1_name, date_time, prn, date_time_return, count) VALUES (%s, %s, %s, %s, %s)",
                    (book1_name, currentdate, prn, date_time_return, count))
         mysql.connection.commit()
         cur.close()
-        # print("I am here  1")
 
-
-
-        # current_datetime = datetime.datetime.now()
-        # currentdate = current_datetime.date()
-        
-        # currentdate and date_time_return - > for equating 
-        # current_date_time and datetime_return - > for format printing
-
-
-        # current_dt_unfor = current_datetime;
-
-       
-
-        # print(date_time_return) 
-        # print("The current date is ", currentdate)
-
-        # print("the date of return of this book is ", date_time_return)
-
-        
-        # return render_template('Chemical.html',data=data)
-            
         return render_template("layout.html", book1_name=book1_name, currentdate=currentdate,  date_time_return=date_time_return, current_date_time=current_date_time, datetime_return=datetime_return, count=count)
         
-        
-    # return render_template('add_book.html')
-
-
-
 
 app.run(host="localhost", debug=True)
