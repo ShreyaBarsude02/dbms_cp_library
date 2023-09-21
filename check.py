@@ -683,23 +683,17 @@ def process_form():
     # return f"You entered the number: {user_input}"
 
 
-@app.route('/issue_book_chemical/<int:sr_no>', methods=['GET', 'POST'])
+@app.route('/issue', methods=['GET', 'POST'])
 
-def issue_book_chemical(sr_no):
+def issue():
     previous_url = request.referrer
     if request.method == "POST":
         # current_datetime = datetime.datetime.now()
-
         current_datetime = datetime.datetime.now()
         currentdate = current_datetime.date()
         # print("I am here  1")
-
-        
-        
-        
         details = request.form
-        book1_name = details['book1_name']
-        
+        book1_name = details['bk_name']
 
         count = session.get('count', 0)
         count = 1
@@ -737,7 +731,7 @@ def issue_book_chemical(sr_no):
         mysql.connection.commit()
         cur.close()
 
-        return render_template("layout.html", book1_name=book1_name, currentdate=currentdate,  date_time_return=date_time_return, current_date_time=current_date_time, datetime_return=datetime_return, count=count)
+        return redirect(previous_url)
         
 
 app.run(host="localhost", debug=True)
