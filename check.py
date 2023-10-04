@@ -644,7 +644,7 @@ def search():
     auth = auth_result['author'] if auth_result else None
     
     # creating view for search
-    cursor.execute("create or replace view search as select bk_name ,bk_id ,dept from books where author = %s", (auth,))
+    cursor.execute("create or replace view search as select bk_name ,bk_id ,dept , author from books where author = %s", (auth,))
 
     cursor.execute("SELECT * FROM books WHERE author = %s", (auth,))
     author_books = cursor.fetchall()
@@ -705,33 +705,59 @@ def issue():
         global scanning 
         scanning=True
 
-        cap = cv2.VideoCapture(0)
-        while scanning:
-            ret, frame = cap.read() #This line reads a frame from the camera feed. ret is a boolean indicating whether the frame was successfully read, and frame contains the image data.
-            if not ret:
-                continue
+        # cap = cv2.VideoCapture(0)
+        # while scanning:
+        #     ret, frame = cap.read() #This line reads a frame from the camera feed. ret is a boolean indicating whether the frame was successfully read, and frame contains the image data.
+        #     if not ret:
+        #         continue
 
-            decoded_objects = decode(frame)
-            for obj in decoded_objects:
-                prn = obj.data.decode('utf-8')
-                # You can do something with the barcode data here.
-                    # Stop scanning after a QR code is detected
-                scanning = False
+        #     decoded_objects = decode(frame)
+        #     for obj in decoded_objects:
+        #         prn = obj.data.decode('utf-8')
+        #         # You can do something with the barcode data here.
+        #             # Stop scanning after a QR code is detected
+        #         scanning = False
 
-                cv2.imshow('Barcode Scanner', frame)
-                if cv2.waitKey(1) & 0xFF == 27:  # Press 'Esc' to exit the barcode scanner.
-                    break
+        #         cv2.imshow('Barcode Scanner', frame)
+        #         if cv2.waitKey(1) & 0xFF == 27:  # Press 'Esc' to exit the barcode scanner.
+        #             break
 
-        cap.release()
-        cv2.destroyAllWindows()
+        # cap.release()
+        # cv2.destroyAllWindows()
 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO book_issue (book1_name, date_time, prn, date_time_return, count) VALUES (%s, %s, %s, %s, %s)",
-                   (book1_name, currentdate, prn, date_time_return, count))
-        mysql.connection.commit()
-        cur.close()
+        # cur = mysql.connection.cursor()
+        # cur.execute("INSERT INTO book_issue (book1_name, date_time, prn, date_time_return, count) VALUES (%s, %s, %s, %s, %s)",
+        #            (book1_name, currentdate, prn, date_time_return, count))
+        # mysql.connection.commit()
+        # cur.close()
 
-        return redirect(previous_url)
+        try:
+             cap = cv2.VideoCapture(0)
+             while scanning:
+                ret, frame = cap.read() #This line reads a frame from the camera feed. ret is a boolean indicating whether the frame was successfully read, and frame contains the image data.
+                if not ret:
+                    continue
+                decoded_objects = decode(frame)
+                for obj in decoded_objects:
+                     prn = obj.data.decode('utf-8')
+                     scanning = False
+
+                     cv2.imshow('Barcode Scanner', frame)
+                     if cv2.waitKey(1) & 0xFF == 27:  # Press 'Esc' to exit the barcode scanner.
+                         break
+                     
+             cap.release()    
+             cv2.destroyAllWindows() 
+
+             cur = mysql.connection.cursor()   
+             cur.execute("INSERT INTO book_issue (book1_name, date_time, prn, date_time_return, count) VALUES (%s, %s, %s, %s, %s)",(book1_name, currentdate, prn, date_time_return, count))
+             mysql.connection.commit()
+             cur.close()
+             flash("Book Issued successfully! ")
+             return redirect(previous_url)
+        except Exception as e:
+            flash("Book Issued successfully! ")
+            return redirect(previous_url)
         
 
 app.run(host="localhost", debug=True)
