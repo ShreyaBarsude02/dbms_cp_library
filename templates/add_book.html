@@ -70,6 +70,9 @@
                                 <!-- <div class="text-center">
                                         <a class="small" href="/admin_logout">Admin Logout</a>
                                     </div> -->
+                                    <div class="text-center">
+                                        <button class="btn btn-primary" onclick="goBack()   ">Go Back</button>
+                                      </div>
                             </form>
                         </div>
                     </div>
@@ -78,7 +81,7 @@
         </div>
 
     </div>
-
+    <script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="{{url_for('static',filename='vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{url_for('static',filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
