@@ -19,7 +19,45 @@
 
     <!-- Custom styles for this template-->
     <link href="{{url_for('static',filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <style>
+    .thid-div{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: .25rem;
+      width: 50%;
+    }
 
+    .alert-warning {
+      color: #ffffff;
+      background-color: #76a0e5;
+      border-color: #ffeeba;
+    }
+
+    .alert-warning strong {
+      color: #ffffff;
+    }
+
+    .btn-close {
+      float: right;
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      opacity: .5;
+    }
+
+    .btn-close:hover {
+      color: #000;
+      text-decoration: none;
+    }
+  </style>
 </head>
 
 <body id="page-top">
@@ -173,7 +211,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter"></span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -268,7 +306,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <!-- <span>Copyright &copy; Your Website 2021</span> -->
                     </div>
                 </div>
             </footer>
