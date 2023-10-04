@@ -21,6 +21,7 @@
                             <th>Book ID</th>
                             <th>Book Name</th>
                             <th>Book Description</th>
+                            <th>Book Author</th>
                         </tr>
                     </thead>
             
@@ -33,6 +34,7 @@
                         <td>{{result['bk_id']}}</td>           
                         <td>{{result['bk_name']}}</td>           
                         <td>{{result['bk_des']}}</td>           
+                        <td>{{result['author']}}</td>           
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -62,6 +64,7 @@
                         <tr>           
                             <th>Book ID</th>
                             <th>Book Name</th>
+                            <th>Book Author</th>
                             <th>Dept</th>
                         </tr>
                     </thead>
@@ -71,6 +74,7 @@
                         <tr>
                         <td>{{author_books['bk_id']}}</td>           
                         <td>{{author_books['bk_name']}}</td>           
+                        <td>{{author_books['author']}}</td>           
                         <td>{{author_books['dept']}}</td>           
                         </tr>
                         {% endfor %}
