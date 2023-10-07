@@ -1,4 +1,13 @@
-{% extends "layout.html" %} {% block body %} {% for book in data %}
+{% extends "layout.html" %} {% block body %} 
+{% for message in get_flashed_messages() %}
+    <div class="thid-div">
+      <div class="alert alert-warning" role="alert">
+        <strong>{{message}}</strong> 
+        <button class="btn-close" onclick="closeAlert()" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    {% endfor %}
+{% for book in data %}
 <div class="card mb-3" style="max-width: 799px; left: 29px">
   <div class="row g-0">
     <div class="col-md-4" style="min-height: 100%; max-width: 200px">
