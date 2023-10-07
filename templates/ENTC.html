@@ -1,29 +1,67 @@
-{% extends "layout.html" %}
-{% block body %}
-  {% for book in data %}
-  <div class="card mb-3" style="max-width: 799px;left: 29px;">
+{% extends "layout.html" %} {% block body %}
+{% for message in get_flashed_messages() %}
+    <div class="thid-div">
+      <div class="alert alert-warning" role="alert">
+        <strong>{{message}}</strong> 
+        <button class="btn-close" onclick="closeAlert()" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    {% endfor %}
+{% for book in data %}
+<div class="card mb-3" style="max-width: 799px; left: 29px">
   <div class="row g-0">
-    <div class="col-md-4"  style="min-height: 100%; max-width: 200px;">
-      <img src="/static/{{ book.file_path|replace('E:\\CP_Sy\\dbms_cp_library\\static\\', '')|replace('\\', '/') }}" class="img-fluid rounded-start" style="min-height: 100%; max-width: 100%;" alt="Book Img">
+    <div class="col-md-4" style="min-height: 100%; max-width: 200px">
+      <img
+        src="/static/{{ book.file_path|replace('E:\\CP_Sy\\dbms_cp_library\\static\\', '')|replace('\\', '/') }}"
+        class="img-fluid rounded-start"
+        style="min-height: 100%; max-width: 100%"
+        alt="Book Img"
+      />
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title" style="font-weight: 700;">Book Name : {{book.bk_name}}</h5>
-        <p class="card-text " style="margin-bottom: 10px;">Author : {{book.author}}</p>
+        <h5 class="card-title" style="font-weight: 700">
+          Book Name : {{book.bk_name}}
+        </h5>
+        <p class="card-text" style="margin-bottom: 10px">
+          Author : {{book.author}}
+        </p>
         <p class="card-text">Description : {{book.bk_des}}</p>
         <div class="row">
-          <p class="card-text"><small class="text-body-secondary">Book ID : {{book.bk_id}}</small></p>
-          <form action="/issue" id="issueForm" method="post" style="margin-left: auto;">
-              <input type="hidden" id="bk_name" name="bk_name" value="{{book.bk_name}}">
-              <input type="hidden" id="bk_id" name="bk_id" value="{{book.bk_id}}">
-              <input type="hidden" id="confirm" name="confirm" value="no">
-              <button class="btn btn-primary" type="submit" onclick="issueConfirm()">Issue book</button> 
+          <p class="card-text">
+            <small class="text-body-secondary">Book ID : {{book.bk_id}}</small>
+          </p>
+          <form
+            action="/issue"
+            id="issueForm"
+            method="post"
+            style="margin-left: auto"
+          >
+            <input
+              type="hidden"
+              id="bk_name"
+              name="bk_name"
+              value="{{book.bk_name}}"
+            />
+            <input
+              type="hidden"
+              id="bk_id"
+              name="bk_id"
+              value="{{book.bk_id}}"
+            />
+            <input type="hidden" id="confirm" name="confirm" value="no" />
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="issueConfirm()"
+            >
+              Issue book
+            </button>
           </form>
-      </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
-  {% endfor %}
-{% endblock %}
+{% endfor %} {% endblock %}
