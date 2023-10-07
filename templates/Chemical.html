@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block body %} 
-    {% for message in get_flashed_messages() %}
+{% for message in get_flashed_messages() %}
     <div class="thid-div">
       <div class="alert alert-warning" role="alert">
         <strong>{{message}}</strong> 
@@ -52,11 +52,6 @@
               name="bk_id"
               value="{{book.bk_id}}"
             />
-            <!-- <form class="user" action="http://127.0.0.1:5000/register" method="post">
-      <input type="hidden" id="prn" name="prn"> -->
-
-            <!-- <label for="numericInput">Enter a Number:</label>
-    <input type="number" id="numericInput" name="prn" min="0" max="100" step="1"> -->
 
             <input type="hidden" id="confirm" name="confirm" value="no" />
 
