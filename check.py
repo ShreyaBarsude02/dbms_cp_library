@@ -224,6 +224,7 @@ def add_book():
         author = details['author']
         dept = session['dept']
         dept_id = session['dept_id']
+        Quantity = details['Quantity']
         
         try:
             if 'file' in request.files:
@@ -234,7 +235,8 @@ def add_book():
                     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                     file.save(file_path)
                     cur = mysql.connection.cursor()
-                    cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path) VALUES (%s,%s,%s, %s, %s, %s,%s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path))
+                    cur.execute("INSERT INTO books(dept_id,dept, bk_id,author,bk_name, bk_des, file_path, Quantity) VALUES (%s,%s,%s, %s, %s, %s,%s, %s)", (dept_id,dept,bk_id,author,bk_name, bk_des,file_path, Quantity))
+                     
                     mysql.connection.commit()
                     cur.close()
                     flash("Book Added successfully! ") 
