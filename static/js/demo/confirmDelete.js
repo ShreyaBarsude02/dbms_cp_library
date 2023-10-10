@@ -6,10 +6,18 @@ function deleteConfirm() {
   }
 }
 function issueConfirm() {
-  let confirmDelete = confirm("Issue book");
-  if (confirmDelete) {
+  let confirmIssue = confirm("Issue book");
+  if (confirmIssue) {
     document.getElementById("confirm").value = "yes";
     document.getElementById("issueForm").submit;
+  }
+}
+
+function returnConfirm(){
+  let confirmReturn = confirm("Return");
+  if (confirmReturn) {
+    document.getElementById("confirm").value = "yes";
+    document.getElementById("returnform").submit;
   }
 }
 
