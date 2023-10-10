@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Return Books</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-5" href="#">Return Books</a>
+        <!-- <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <!-- <div class="collapse navbar-collapse mx-5" id="navbarSupportedContent">
+          <form   class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              name="prn"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div> -->
+        <div class="buttons float-right "> 
+          <a href="/admin_flash"> <button class = "btn btn-primary">Back to Home</button></a>
+      </div>
+      </div>
+    </nav>
+    <br />
+    <br />
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Book Name</th>
+            <th scope="col">PRN</th>
+            <th scope="col">Due date(YYYY-MM-DD)</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in data %}
+          <tr>
+            <td>{{book.book1_name}}</td>
+            <td>{{book.prn}}</td>
+            <td>{{book.date_time_return}}</td>
+            <td>
+              <form action="/return_confirm" method="post" id="returnform">
+                <input type="hidden" name="book"  value="{{book.book1_name}}">
+                <input type="hidden" name="prn"  value="{{book.prn}}">
+                <input type="hidden" name="confirm" id="confirm" value="no">
+                <button class="btn btn-primary" onclick="returnConfirm()">Return</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script src="{{url_for('static',filename='js/demo/confirmDelete.js')}}"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
