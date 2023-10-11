@@ -10,7 +10,8 @@ import datetime
 import cv2
 from pyzbar.pyzbar import decode
 from datetime import timedelta
-import calendar
+from datetime import datetime, timedelta
+
 
 scanning = False
 
@@ -62,7 +63,9 @@ def login():
             session['prn'] = account['prn']
             session['email_add'] = account['email_add']
             msg = 'Logged in successfully!'
-            current_datetime = datetime.datetime.now()
+            # current_datetime = datetime.datetime.now()
+            # currentdate = current_datetime.date()
+            current_datetime = datetime.now()  # Use the datetime class from the datetime module
             currentdate = current_datetime.date()
             session['count'] = count
 
@@ -279,6 +282,21 @@ def eb():
 
 @app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
+    try:
+        current_datetime = datetime.now()
+        currentdate = current_datetime.date()
+        cur = mysql.connection.cursor()
+        
+        # Calculate two days ago
+        two_days_ago = currentdate - timedelta(days=2)
+        
+        query = ("DELETE FROM book_issue WHERE date_time < %s AND state != %s")
+        cur.execute(query, (two_days_ago,1))
+        mysql.connection.commit()
+        print("done")
+    except Exception as e:
+        print(e)
+
     if request.method == "POST":
         username = request.form.get("username")
         userpass = request.form.get("password")
@@ -761,14 +779,19 @@ def process_form():
 def issue():
     previous_url = request.referrer
     if request.method == "POST":
+        # current_datetime = datetime.datetime.now()
+        current_datetime = datetime.now()
+        currentdate = current_datetime.date()
+        # current_date_time = current_datetime.strftime("%B %d, %Y")
+        date_time_return = currentdate   + timedelta(days=7) 
+        
+        datetime_return = date_time_return.strftime("%B %d, %Y")
+
         details = request.form
         confirm = details['confirm']
         print(confirm)
-        if confirm == "yes":
-            # current_datetime = datetime.datetime.now()
-            current_datetime = datetime.datetime.now()
-            currentdate = current_datetime.date()
-        # print("I am here  1")
+        if confirm == "yes" or "no":
+            
             book1_name = details['bk_name']
             dept_id = details['dept_id']
             Quantity = details['Quantity']
@@ -812,7 +835,9 @@ def issue():
                             (book1_name, currentdate, prn, count, date_time_return, dept_id))
                 mysql.connection.commit()
                 cur.close()
-                flash("Book Issued successfully! ")
+                # flash("Book Issued successfully! ")
+                message = book1_name + " Book Issued successfully! The return date is : " +  datetime_return 
+                flash(message)
                 return redirect(previous_url)
             except Exception as e:
                 print(e)
@@ -828,8 +853,8 @@ def return_book():
     # Use DictCursor for better access to column values
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    query = "SELECT * FROM book_issue WHERE prn LIKE %s"
-    cur.execute(query, ('%' + prn + '%',))
+    query = "SELECT * FROM book_issue WHERE prn LIKE %s AND state = %s"
+    cur.execute(query, ('%' + prn + '%', 1))
     data = cur.fetchall()
 
     cur.close()
@@ -843,7 +868,7 @@ def return_confirm():
     prn = request.form.get('prn')
     confirm = request.form.get('confirm')
     # print(confirm)
-    if confirm == "yes":
+    if confirm == "yes" or "no":
         try:
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute(
@@ -856,6 +881,50 @@ def return_confirm():
         return redirect(request.referrer)
     
     return redirect(request.referrer)
+
+@app.route('/issue_book_admin')
+def issue_book_admin():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("SELECT * FROM book_issue WHERE state = %s " , (0 , ))
+    mysql.connection.commit()
+    data = cur.fetchall()
+
+    cur.close()
+
+    return render_template('issue_book_admin.html' , data = data)
+
+
+@app.route('/change_state', methods=['GET', 'POST'])
+def change_state():
+    book = request.form.get('book')
+    prn = request.form.get('prn')
+
+    try:
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("UPDATE book_issue SET state = %s WHERE prn = %s AND book1_name = %s" , (1 , prn , book))
+        mysql.connection.commit()
+        cur.close()
+    except Exception as e:
+        print(e)
+
+    return redirect(request.referrer)
+
+@app.route('/confirm_search', methods=['GET', 'POST'])
+def confrem_search():
+        prn = request.form.get('prn')
+        print(prn)
+        data = []
+        if request.method == "POST":
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute("SELECT * FROM book_issue WHERE prn = %s AND state = %s",(prn,0))
+            mysql.connection.commit()
+            data = cur.fetchall()
+            cur.close()
+        else:
+            print("Error")
+        
+        return render_template('issue_book_admin.html' , data = data)
 
 
 @app.route('/all_books')
