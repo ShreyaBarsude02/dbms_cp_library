@@ -20,6 +20,9 @@
         <div class="row">
           <p class="card-text">
             <small class="text-body-secondary">Book ID : {{book.bk_id}}</small>
+            <small class="text-body-secondary mx-4"
+              >Book Quantity : {{book.Quantity}}</small
+            >
           </p>
           <form
             action="/issue"
@@ -39,6 +42,18 @@
               name="bk_id"
               value="{{book.bk_id}}"
             />
+            <input
+            type="hidden"
+            id="dept_id"
+            name="dept_id"
+            value="{{book.dept_id}}"
+          />
+          <input
+            type="hidden"
+            id="Quantity"
+            name="Quantity"
+            value="{{book.Quantity}}"
+          />
             <input type="hidden" id="confirm" name="confirm" value="no" />
             <button
               class="btn btn-primary"
