@@ -1,13 +1,14 @@
-{% extends "layout.html" %} {% block body %} 
-{% for message in get_flashed_messages() %}
-    <div class="thid-div">
-      <div class="alert alert-warning" role="alert">
-        <strong>{{message}}</strong> 
-        <button class="btn-close" onclick="closeAlert()" aria-label="Close">&times;</button>
-      </div>
-    </div>
-    {% endfor %}
-{% for book in data %}
+{% extends "layout.html" %} {% block body %} {% for message in
+get_flashed_messages() %}
+<div class="thid-div">
+  <div class="alert alert-warning" role="alert">
+    <strong>{{message}}</strong>
+    <button class="btn-close" onclick="closeAlert()" aria-label="Close">
+      &times;
+    </button>
+  </div>
+</div>
+{% endfor %} {% for book in data %}
 
 <div class="card mb-3" style="max-width: 50%; left: 25px">
   <div class="row g-0">
@@ -32,6 +33,9 @@
         <div class="row">
           <p class="card-text">
             <small class="text-body-secondary">Book ID : {{book.bk_id}}</small>
+            <small class="text-body-secondary mx-4"
+              >Book Quantity : {{book.Quantity}}</small
+            >
           </p>
           <form
             action="/issue"
@@ -51,6 +55,18 @@
               id="bk_id"
               name="bk_id"
               value="{{book.bk_id}}"
+            />
+            <input
+              type="hidden"
+              id="dept_id"
+              name="dept_id"
+              value="{{book.dept_id}}"
+            />
+            <input
+              type="hidden"
+              id="Quantity"
+              name="Quantity"
+              value="{{book.Quantity}}"
             />
 
             <input type="hidden" id="confirm" name="confirm" value="no" />
