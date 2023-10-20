@@ -36,15 +36,35 @@ get_flashed_messages() %}
             >
           </p>
           <form
-            action="/issue" id="issueForm"  method="post"   style="margin-left: auto">
+            action="/issue"
+            id="issueForm"
+            method="post"
+            style="margin-left: auto"
+          >
             <input
-              type="hidden" id="bk_name" name="bk_name" value="{{book.bk_name}}"/>
+              type="hidden"
+              id="bk_name"
+              name="bk_name"
+              value="{{book.bk_name}}"
+            />
             <input
-              type="hidden" id="bk_id" name="bk_id" value="{{book.bk_id}}"/>
+              type="hidden"
+              id="bk_id"
+              name="bk_id"
+              value="{{book.bk_id}}"
+            />
             <input
-              type="hidden" id="dept_id" name="dept_id" value="{{book.dept_id}}"/>
+              type="hidden"
+              id="dept_id"
+              name="dept_id"
+              value="{{book.dept_id}}"
+            />
             <input
-              type="hidden" id="Quantity"  name="Quantity" value="{{book.Quantity}}"/>
+              type="hidden"
+              id="Quantity"
+              name="Quantity"
+              value="{{book.Quantity}}"
+            />
             <input type="hidden" id="confirm" name="confirm" value="no" />
             <button class="btn btn-primary" onclick="issueConfirm()">
               Issue book
