@@ -63,9 +63,7 @@ def login():
             session['prn'] = account['prn']
             session['email_add'] = account['email_add']
             msg = 'Logged in successfully!'
-            # current_datetime = datetime.datetime.now()
-            # currentdate = current_datetime.date()
-            # Use the datetime class from the datetime module
+
             current_datetime = datetime.now()
             currentdate = current_datetime.date()
             session['count'] = count
